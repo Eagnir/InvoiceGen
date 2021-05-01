@@ -1,4 +1,4 @@
-InvoiceGen is a simple invoice generator written in GO Language.
+InvoiceGen is a simple invoice generator written in Go Language (golang).
 **(Project Under Development)**
 - [Introduction](#Introduction)
 - [Installation](#installation)
@@ -10,7 +10,7 @@ InvoiceGen is a simple invoice generator written in GO Language.
 - [Contribute](#contribute)
 
 # Introduction
-This is a simple Invoice Generator (InvoiceGen) project, developed in GO Language + VUE.js with the following feature set.
+This is a simple Invoice Generator (InvoiceGen) project, developed in Go Language (golang) + VUE.js with the following feature set.
 
 1. Maintain records of Clients for a company with their basic details
 2. Maintain Company details
@@ -52,7 +52,7 @@ This section is for developers interested in building from source or simply want
 - Typescript
 
 ### Backend
-- Go (GoLang) - v1.16.3
+- Go (golang) - v1.16.3
 - GORM (ORM) - v2.0
 - SQLite Database - v3.35.5
 - Make - v3.81
@@ -62,7 +62,7 @@ This section is for developers interested in building from source or simply want
 To build the project certain dependencies are required.
 
 ### Dependencies
-Installing the GO Language from their official page
+Installing the Go Language (golang) from their official page
 ```
 https://golang.org/dl/
 ```
