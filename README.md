@@ -1,4 +1,15 @@
-# Introduction - Project Under Development
+InvoiceGen is a simple invoice generator written in GO Language.
+**(Project Under Development)**
+- [Introduction](#Introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Version History](#version-history)
+- [Building from Source](#building-from-source)
+- [Tasks](#tasks)
+- [Troubleshoot](#troubleshoot)
+- [Contribute](#contribute)
+
+# Introduction
 This is a simple Invoice Generator (InvoiceGen) project, developed in GO Language + VUE.js with the following feature set.
 
 1. Maintain records of Clients for a company with their basic details
@@ -31,7 +42,7 @@ Coming soon...
 # Version History
 - v1.0 - (Current)
 
-# Source
+# Building from Source
 This section is for developers interested in building from source or simply want to take a look under the hood.
 
 ## Technology Used
@@ -121,10 +132,14 @@ go run ./interface/cmd/main.go list -entity=adminusers
 You can add a `json` flag at the end to output in json format (which exports more data), but it has to be the absolute last flag in the command, if it's not passed, output is in text format.
 
 
-## Test from Source Code
-Will implement the test files soon, this would allow the developer to execute test before build and automatically identity if something fails.
+## Unit Tests
+Will implement the unit test files soon, this would allow the developer to execute test before build and automatically identity if something fails.
 
 It is a tedious task and will get it done, but in due time.
+
+## Licensing
+
+This code is released under the [GNU General Public License v3.0](./LICENSE). For more information, see the [LICENSE file](./LICENSE).
 
 # Tasks
 ## Tasks for Core Functionality
@@ -169,3 +184,12 @@ Some interesting reads on Cross Compilers
 - https://blog.filippo.io/easy-windows-and-linux-cross-compilers-for-macos/
 - https://github.com/mitchellh/gox
 - https://github.com/karalabe/xgo
+
+
+# Contribute
+
+- If you want to contribute, simply fork it, branch it, change it, pull it.
+- If you want feedback or suggestions or feature requests, send them across.
+- Report issues on Github.
+- Send pull requests for bugfixes and improvements.
+- Send proposals on Github issues.
