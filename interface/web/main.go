@@ -1,188 +1,177 @@
 package main
 
 import (
-	"InvoiceGen/entity"
-	"InvoiceGen/infrastructure/repository"
-	"InvoiceGen/usecase/adminUser"
-	"fmt"
+	"InvoiceGen/interface/web/api"
+	"context"
+	"flag"
+	"net/http"
 	"os"
+	"os/signal"
+	"strings"
+	"time"
 
-	"gorm.io/gorm"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/color"
 )
 
+var DefaultPort string = "8080"
+var DefaultDomain string = "localhost"
+
+type (
+	ConfigInterfaces []string
+
+	Config struct {
+		Domain string
+		Port   string
+	}
+
+	HookInterface interface {
+		ServeHTTP(w http.ResponseWriter, r *http.Request)
+		GetSubdomain() string
+		GetDomain() string
+		GetPort() string
+	}
+)
+
+func (i *ConfigInterfaces) String() string {
+	return strings.Join(*i, ",")
+}
+
+func (i *ConfigInterfaces) Set(value string) error {
+	*i = append(*i, value)
+	return nil
+}
+func (i *ConfigInterfaces) contains(value string) bool {
+	for _, itemValue := range *i {
+		if strings.ToLower(itemValue) == strings.ToLower(value) {
+			return true
+		}
+	}
+	return false
+}
+
+func (i *Config) String() string {
+	return "d=" + i.Domain + "p=" + i.Port
+}
+
+func (i *Config) Set(value string) error {
+	ar := strings.Split(value, " ")
+	for _, item := range ar {
+		r := strings.Split(item, "=")
+		name := r[0]
+		value := r[1]
+		if strings.ToLower(name) == strings.ToLower("p") || strings.ToLower(name) == strings.ToLower("port") {
+			i.Port = value
+			return nil
+		}
+		if strings.ToLower(name) == strings.ToLower("d") || strings.ToLower(name) == strings.ToLower("domain") {
+			i.Domain = value
+			return nil
+		}
+	}
+	return nil
+}
+func (i *Config) SetToDefault() {
+	i.Domain = DefaultDomain
+	i.Port = DefaultPort
+}
+
+var hosts map[string]HookInterface = map[string]HookInterface{}
+
 func main() {
-	fmt.Println("Hello Web")
-	fmt.Println("-------------")
+	c := color.New()
 
-	/* invoice, ex := entity.NewInvoice(entity.InvoiceCreated)
-	if ex == nil {
-		invoice.AddTagByName("CLS Project")
-		invoice.AddTagByName("Home Coming")
-		invoice.AddTagByName("Urgent")
-		invoice.AddTagByName("Overdue")
+	var activeInterfaces ConfigInterfaces
+	var activeConfig Config = Config{}
+	activeConfig.SetToDefault()
 
-		//var x := append(invoice.Tags[:2])
-		//var y := append(invoice.Tags[2:])
+	flag.Var(&activeInterfaces, "interface", "Which web interfaces to run, valid options are 'api' and 'pwa'. to have both do. -interface api -interface pwa")
+	flag.Parse()
+	flag.Var(&activeConfig, "config", "Configure Port and Domain name for the web interface. eg. -cofnig port=1206 domain=localhost")
+	flag.Parse()
 
-		//fmt.Println("Before 2: ", x, y)
+	//configCmd := flag.NewFlagSet("config", flag.ExitOnError)
+	//configPort := configCmd.String("port", DefaultPort, "Port on which the web server will listen to.")
+	//configDomain := configCmd.String("domain", DefaultDomain, "Domain name to host the site on.")
 
-		for _, value := range invoice.Tags {
-			fmt.Println(value.Name)
+	// Set default interfaces to api and pwa
+	if len(activeInterfaces) <= 0 {
+		activeInterfaces = append(activeInterfaces, "api")
+		activeInterfaces = append(activeInterfaces, "pwa")
+	} else {
+		c.Printf("Interface(s) provided: ")
+		for _, item := range activeInterfaces {
+			if item == "api" || item == "pwa" {
+				c.Printf("%s ", c.Green(item))
+				continue
+			}
+			c.Printf("%s ", c.Red(item+"[not recognised]"))
 		}
-
-		fmt.Println("-------------")
-
-		invoice.RemoveTagByName("Urgent")
-		tg, ex := entity.NewTag("Home Coming")
-		if ex == nil {
-			invoice.RemoveTag(tg)
-		}
-
-		for _, value := range invoice.Tags {
-			fmt.Println(value.Name)
-		}
-	} */
-
-	os.Remove("test.db")
-
-	db := repository.DBContext{}
-	er := db.OpenContext()
-	if er != nil {
-		panic(er)
+		c.Printf("\n")
 	}
-	defer db.CloseContext()
-	db.Context.AutoMigrate(entity.AllModels...)
-	defaultData := entity.GenerateDefaultData()
-	db.Context.Transaction(func(tx *gorm.DB) error {
-		for _, model := range defaultData {
-			tx.Create(model)
+
+	if activeInterfaces.contains("api") {
+		apiv1, host := api.NewAPI("api", activeConfig.Domain, activeConfig.Port, echo.New())
+		apiv1.HookHandlers()
+		apiv1.Echo.Any("/", func(c echo.Context) (err error) {
+			c.Redirect(301, "/version")
+			return
+		})
+		hosts[host] = apiv1
+	}
+
+	if activeInterfaces.contains("pwa") {
+		// Load pwa interface
+	}
+
+	e := echo.New()
+	e.HideBanner = true
+	e.HidePort = true
+	e.Any("/*", func(c echo.Context) (err error) {
+		req := c.Request()
+		res := c.Response()
+		host := hosts[req.Host]
+		if host == nil {
+			err = echo.ErrNotFound
+		} else {
+			host.ServeHTTP(res, req)
 		}
-		return nil
+		return
 	})
 
-	auService := adminUser.NewService(db)
-
-	obj, err := entity.NewAdminUser("Trial Account", "Trial@gmail.com", "123")
-	if err != nil {
-		panic(err)
-	}
-	auService.SaveObject(obj)
-
-	_, err = auService.SaveObjectFromNew(entity.NewAdminUser("Ethen", "ethen@gmail.com", "123"))
-	if err != nil {
-		panic(err)
-	}
-	_, err = auService.SaveObjectFromNew(entity.NewAdminUser("Jane", "janedoe@gmail.com", "373"))
-	if err != nil {
-		panic(err)
-	}
-	_, err = auService.SaveObjectFromNew(entity.NewAdminUser("John", "jdoe@gmail.com", "333"))
-	if err != nil {
-		panic(err)
-	}
-
-	/* _, er := auService.DeleteByObject(&entity.AdminUser{Password: "123"})
-	if er != nil {
-		panic(er)
-	}
-	*/
-	niravUser, err := auService.GetEntityById(1)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Hello " + niravUser.Email)
-
-	fmt.Println("----------------")
-
-	users, err := auService.Search(entity.AdminUser{
-		Password: "123",
-	})
-	if err != nil {
-		panic(err)
-	}
-	for _, user := range users {
-		fmt.Println(user.Name)
-	}
-
-	/*
-		var wg sync.WaitGroup
-
-		wg.Add(2)
-
-		go func(wg *sync.WaitGroup) {
-			defer wg.Done()
-			db := &repository.DBContext{}
-			db.OpenContext()
-			defer db.CloseContext()
-			time.Sleep(time.Second * 20)
-			companies := &[]entity.Company{}
-			db.Context.First(companies)
-			for _, company := range *companies {
-				fmt.Println(company.Email)
-			}
-		}(&wg)
-		//wg.Add(1)
-		go func(wg *sync.WaitGroup) {
-			defer wg.Done()
-			db := &repository.DBContext{}
-			db.OpenContext()
-			defer db.CloseContext()
-			time.Sleep(time.Second * 10)
-			companies := &[]entity.Company{}
-			db.Context.First(companies)
-			for _, company := range *companies {
-				fmt.Println(company.Name)
-			}
-		}(&wg)
-
-		wg.Wait() */
-
-	/* invoice, ex := entity.NewInvoice(entity.InvoiceCreated)
-	if ex == nil {
-		invoice.ClientId = 1
-		invoice.CompanyId = 1
-		invoice.AddTagByName("Urgent")
-		invoice.AddTagByName("Overdue")
-		db.Create(invoice)
-	}
-
-	invoice2, ex2 := entity.NewInvoice(entity.InvoiceCreated)
-	if ex2 == nil {
-		invoice2.ClientId = 1
-		invoice2.CompanyId = 1
-		invoice2.AddTagByName("Urgent")
-		invoice2.AddTagByName("CLS Project")
-		//invoice2.AutoFillInvoiceNumber(2)
-		dc := db.Create(invoice2)
-		if dc.Error != nil {
-			fmt.Println(dc.Error.Error())
+	// Start the server in a goroutine
+	go func() {
+		c := color.New()
+		c.Printf("InvoiceGen Web Interfaces \n")
+		for _, host := range hosts {
+			c.Printf("http://%s.%s:%s\n", c.Green(host.GetSubdomain()), c.Blue(host.GetDomain()), c.Blue(host.GetPort()))
 		}
-	} */
-
-	//res := db.Model(&entity.TaxGroup{TaxGroupId: 2}).Association("Taxes").Count()
-	//fmt.Println(res)
-
-	/* tg := []entity.TaxGroup{}
-	db.Debug().Preload(clause.Associations).Find(&tg)
-	fmt.Println(len(tg)) */
-
-	/* var taxGroup []entity.TaxGroup = []entity.TaxGroup{}
-	db.Preload("Taxes").Find(&taxGroup)
-	fmt.Println("List of Tax Groups")
-	for _, tg := range taxGroup {
-		fmt.Println(tg.ShortName)
-		for _, tx := range *tg.Taxes {
-			fmt.Printf("\t Tax: %s \t Perct: %f\n", tx.ShortName, tx.Percentage)
+		err := e.Start(activeConfig.Domain + ":" + activeConfig.Port)
+		if err != nil {
+			e.Logger.Fatal(err)
 		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := e.Shutdown(ctx); err != nil {
+		e.Logger.Fatal(err)
 	}
+}
 
-	fmt.Println("")
-	fmt.Println("")
-	fmt.Println("List of Taxes")
-	var tax []entity.Tax = []entity.Tax{}
-	db.Find(&tax)
-	for _, tg := range tax {
-		fmt.Println(tg.ShortName, tg.TaxGroup)
-	} */
+func customHTTPErrorHandler(err error, c echo.Context) {
+	c.Logger().Error(err)
+	code := http.StatusInternalServerError
+	if he, ok := err.(*echo.HTTPError); ok {
+		code = he.Code
+	}
+	c.String(code, "Hello World")
+}
 
+// Handler
+func hello(c echo.Context) error {
+	return c.String(http.StatusOK, "Hello, World!")
 }

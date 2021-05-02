@@ -17,22 +17,18 @@ dependencies:
 
 build: clean dependencies build-macos build-windows
 
-build-macos:
-	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o ./bin/mac/invoiceGen-web.macos ./interface/web/main.go
-	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -a -o ./bin/mac/invoiceGen-cmd.macos ./interface/cmd/main.go
+build-macos: build-web-macos build-cmd-macos
 	
-build-windows:
-	env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -a -o ./bin/windows/invoiceGen-web.exe ./interface/api/main.go
-	env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -a -o ./bin/windows/invoiceGen-cmd.exe ./interface/cmd/main.go
+build-windows: build-web-windows build-cmd-windows
 
-build-api-macos: 
-	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o ./bin/mac/invoiceGen-web.macos ./interface/api/main.go
+build-web-macos: 
+	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o ./bin/mac/invoiceGen-web.macos ./interface/web/main.go
 	
 build-cmd-macos:
 	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -a -o ./bin/mac/invoiceGen-cmd.macos ./interface/cmd/main.go
 	
-build-api-windows: 
-	env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -a -o ./bin/windows/invoiceGen-web.exe ./interface/api/main.go
+build-web-windows: 
+	env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -a -o ./bin/windows/invoiceGen-web.exe ./interface/web/main.go
 
 build-cmd-windows:
 	env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -a -o ./bin/windows/invoiceGen-cmd.exe ./interface/cmd/main.go

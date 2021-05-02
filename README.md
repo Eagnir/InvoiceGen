@@ -47,15 +47,18 @@ This section is for developers interested in building from source or simply want
 
 ## Technology Used
 
-### Frontend (development pending, this can change)
-- VUE.js
-- Typescript
+### Frontend Progressive Web App (development pending, this can change)
+- VUE.js - [Office Site](https://vuejs.org)
+- Typescript - [Office Site](https://www.typescriptlang.org)
 
 ### Backend
-- Go (golang) - v1.16.3
-- GORM (ORM) - v2.0
-- SQLite Database - v3.35.5
-- Make - v3.81
+- Go (golang) - go1.16.3 for darwin/amd64 [Office Site](https://golang.org)
+- GORM (ORM) - [Office Site](https://gorm.io)
+- Echo (Web Framework) - [Office Site](https://echo.labstack.com)
+- SQLite Database - [Office Site](https://www.sqlite.org)
+- Make - v3.81 for i386-apple-darwin11.3.0 [Office Site](https://www.gnu.org/software/make/)
+
+Full list of dependencies in [go.mod file](./go.mod)
 
 ## Build Process on MacOS
 ---
@@ -97,11 +100,11 @@ The above commands will build the binaries for both the interfaces of the select
 
 **Web Interface Only**
 ```
-make build-api-macos
+make build-web-macos
 ```
 or
 ```
-make build-api-windows
+make build-web-windows
 ```
 **Command Line Interface Only**
 ```
