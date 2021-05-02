@@ -48,7 +48,7 @@ This section is for developers interested in building from source or simply want
 ## Technology Used
 
 ### Frontend Progressive Web App (development pending, this can change)
-- VUE.js - [Office Site](https://vuejs.org)
+- VUE.js - @vue/cli v4.5.12 [Office Site](https://vuejs.org)
 - Typescript - [Office Site](https://www.typescriptlang.org)
 
 ### Backend

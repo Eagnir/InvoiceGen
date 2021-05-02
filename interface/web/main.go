@@ -2,6 +2,7 @@ package main
 
 import (
 	"InvoiceGen/interface/web/api"
+	"InvoiceGen/interface/web/pwa"
 	"context"
 	"flag"
 	"net/http"
@@ -86,8 +87,7 @@ func main() {
 	activeConfig.SetToDefault()
 
 	flag.Var(&activeInterfaces, "interface", "Which web interfaces to run, valid options are 'api' and 'pwa'. to have both do. -interface api -interface pwa")
-	flag.Parse()
-	flag.Var(&activeConfig, "config", "Configure Port and Domain name for the web interface. eg. -cofnig port=1206 domain=localhost")
+	flag.Var(&activeConfig, "config", "Configure Port and Domain name for the web interface. eg. -config port=1206 domain=localhost")
 	flag.Parse()
 
 	//configCmd := flag.NewFlagSet("config", flag.ExitOnError)
@@ -122,9 +122,24 @@ func main() {
 
 	if activeInterfaces.contains("pwa") {
 		// Load pwa interface
+		pwa, host := pwa.NewPWA("app", "./pwa/dist/", activeConfig.Domain, activeConfig.Port, echo.New())
+		//pwa.Echo.Use(middleware.Logger())
+		//pwa.Echo.Logger.SetLevel(log.OFF)
+		//pwa.Echo.Use(middleware.Recover())
+		pwa.HookHandlers()
+		//pwa.Echo.Any("/", func(c echo.Context) (err error) {
+		//	c.Redirect(301, "/version")
+		//	return
+		//})
+		hosts[host] = pwa
 	}
 
 	e := echo.New()
+
+	//e.Use(middleware.Logger())
+	//e.Logger.SetLevel(log.OFF)
+	//e.Use(middleware.Recover())
+
 	e.HideBanner = true
 	e.HidePort = true
 	e.Any("/*", func(c echo.Context) (err error) {
