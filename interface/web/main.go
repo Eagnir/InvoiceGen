@@ -122,7 +122,7 @@ func main() {
 
 	if activeInterfaces.contains("pwa") {
 		// Load pwa interface
-		pwa, host := pwa.NewPWA("app", "./pwa/dist/", activeConfig.Domain, activeConfig.Port, echo.New())
+		pwa, host := pwa.NewPWA("app", "pwa/dist/", activeConfig.Domain, activeConfig.Port, echo.New(), true)
 		//pwa.Echo.Use(middleware.Logger())
 		//pwa.Echo.Logger.SetLevel(log.OFF)
 		//pwa.Echo.Use(middleware.Recover())
