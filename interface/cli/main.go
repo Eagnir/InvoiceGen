@@ -38,7 +38,8 @@ func main() {
 	outputFormat := "text"
 
 	listCmd := flag.NewFlagSet("list", flag.ExitOnError)
-	listEntity := listCmd.String("entity", "clients", "Name of an entity like 'client' or 'company' to get a list of enrity records")
+	listEntity := listCmd.String("entity", "clients", "Name of an entity like 'client' or 'company' to get a list of entity records")
+	// list -entity adminusers
 	//fooName := fooCmd.String("name", "", "name")
 
 	if len(os.Args) < 2 {

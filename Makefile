@@ -17,21 +17,21 @@ dependencies:
 
 build: clean dependencies build-macos build-windows
 
-build-macos: build-web-macos build-cmd-macos
+build-macos: build-web-macos build-cli-macos
 	
-build-windows: build-web-windows build-cmd-windows
+build-windows: build-web-windows build-cli-windows
 
 build-web-macos: 
 	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o ./bin/mac/invoiceGen-web.macos ./interface/web/main.go
 	
-build-cmd-macos:
-	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -a -o ./bin/mac/invoiceGen-cmd.macos ./interface/cmd/main.go
+build-cli-macos:
+	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -a -o ./bin/mac/invoiceGen-cli.macos ./interface/cli/main.go
 	
 build-web-windows: 
 	env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -a -o ./bin/windows/invoiceGen-web.exe ./interface/web/main.go
 
-build-cmd-windows:
-	env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -a -o ./bin/windows/invoiceGen-cmd.exe ./interface/cmd/main.go
+build-cli-windows:
+	env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -a -o ./bin/windows/invoiceGen-cli.exe ./interface/cli/main.go
 
 ci: dependencies test	
 

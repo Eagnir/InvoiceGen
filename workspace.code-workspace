@@ -1,0 +1,49 @@
+{
+	"folders": [
+		{
+			"path": ".", "name": "Core Go Module"
+		},
+		{
+			"path": "interface/web", "name": "Web Interface"
+		},
+		{
+			"path": "interface/cli", "name": "Command Line Interface"
+		},
+		{
+			"path": "interface/web/api", "name": "API Interface"
+		},
+		{
+			"path": "interface/web/pwa", "name": "Progresive Web App Interface"
+		}
+	],
+	"settings": {},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "CLI",
+				"type": "go",
+				"request": "launch",
+				"mode": "auto",
+				"program": "${workspaceFolder:Command Line Interface}/main.go",
+				"args": ["list","-entity","adminusers"]
+			},
+			{
+				"name": "API",
+				"type": "go",
+				"request": "launch",
+				"mode": "auto",
+				"program": "${workspaceFolder:Web Interface}/main.go",
+				"args": ["-interface","api","-config","port=1206"]
+			},
+			{
+				"name": "PWA Live",
+				"type": "go",
+				"request": "launch",
+				"mode": "auto",
+				"program": "${workspaceFolder:Web Interface}/main.go",
+				"args": ["-config","port=1206"]
+			}
+		]
+	}
+}

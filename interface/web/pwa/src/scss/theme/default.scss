@@ -1,0 +1,59 @@
+@use 'customization' as *;
+
+// CSS Styles should be placed here
+
+// Defaults
+
+button {
+    cursor: pointer;
+    border: 0px;
+    padding: 10px 20px;
+    @extend %button-style;
+}
+button:hover, button:focus {
+    @extend %button-style-hover;
+}
+
+a {
+    @extend %link-style;
+  }
+  a:hover {
+    @extend %link-style-hover;
+  }
+
+  h1 {
+      @extend %heading-1;
+  }
+  h2 {
+    @extend %heading-2;
+}
+h3 {
+    @extend %heading-3;
+}
+
+html,
+body {
+  font-size: 100%;
+  background-color: $primary-color;
+  color: contrast();
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: contrast('primary');
+}
+
+#nav a.router-link-exact-active {
+  color: $accent-sec-color;
+}

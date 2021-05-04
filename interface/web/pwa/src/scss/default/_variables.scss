@@ -1,0 +1,30 @@
+@use "sass:color";
+
+$is-theme-light: false;
+
+$primary-color: #206a5d; // 60%
+$secondary-color: #81b214; // 15% (+15% from ForegroundColor<Light/Dark>)
+$accent-sec-color: #ffcc29; // 10%
+$accent-pri-color: #f58634; // 10%
+
+
+$positive-color: green;
+$negative-color: red;
+$neutral-color: Grey;
+
+$contrast-colors: (
+  'dark': (
+    'primary': rgb(255, 255, 255),
+    'secondary': rgba(255, 255, 255, .70),
+    'disabled': rgba(255, 255, 255, .5),
+    'hint': rgba(255, 255, 255, .12)
+  ),
+  'light': (
+    'primary': rgba(0, 0, 0, .87),
+    'secondary': rgba(0, 0, 0, .54),
+    'disabled': rgba(0, 0, 0, .38),
+    'hint': rgba(0, 0, 0, .12)
+  ),
+);
+
+$font-stack:    "Poppins";

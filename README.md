@@ -108,11 +108,11 @@ make build-web-windows
 ```
 **Command Line Interface Only**
 ```
-make build-cmd-macos
+make build-cli-macos
 ```
 or
 ```
-make build-cmd-windows
+make build-cli-windows
 ```
 ## Run from Source Code
 ---
@@ -126,11 +126,11 @@ which will start the web server and listen on the port 8080 on localhost, you ca
 
 **Run Project's Command Line Interface**
 ```
-go run ./interface/cmd/main.go
+go run ./interface/cli/main.go
 ```
 Remember the above command directly starts the execution so pass in any parameters you want at the end of the run command, for example.
 ```
-go run ./interface/cmd/main.go list -entity=adminusers
+go run ./interface/cli/main.go list -entity=adminusers
 ```
 You can add a `json` flag at the end to output in json format (which exports more data), but it has to be the absolute last flag in the command, if it's not passed, output is in text format.
 

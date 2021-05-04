@@ -1,0 +1,81 @@
+@forward 'variables';
+@forward 'functions';
+
+
+@use 'variables'as var;
+@use 'functions'as fn;
+
+@use 'fonts/poppins.scss';
+
+%button-style {
+  font-size: 0.875rem;
+
+  background-color: var.$accent-sec-color;
+  color: fn.override-contrast();
+  border: 1px solid var.$accent-sec-color;
+}
+
+%button-style-hover {
+  background-color: var.$secondary-color;
+  color: override-contrast();
+  border-color: var.$secondary-color;
+}
+
+%link-style {
+  text-decoration: none;
+
+  color: var.$accent-sec-color;
+}
+
+%link-style-hover {
+  color: var.$secondary-color;
+}
+
+
+%heading-1 {
+  font-family: unquote("Poppins");
+  font-size: 2.30rem;
+  font-weight: 700;
+}
+
+%heading-2 {
+  font-family: unquote("Poppins");
+  font-size: 1.75rem;
+  font-weight: 400;
+}
+
+%heading-3 {
+  font-family: unquote("Poppins");
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+%body-1 {
+  font-family: unquote("Poppins");
+  font-size: 1rem;
+}
+
+%body-2 {
+  font-family: unquote("Poppins");
+  font-size: 0.875rem;
+}
+
+%subtitle-1 {
+  font-family: unquote("Poppins");
+  font-size: 1rem;
+}
+
+%subtitle-2 {
+  font-family: unquote("Poppins");
+  font-size: 0.875rem;
+}
+
+%overline {
+  font-family: unquote("Poppins");
+  font-size: 0.625rem;
+}
+
+%caption {
+  font-family: unquote("Poppins");
+  font-size: 0.75rem;
+}
