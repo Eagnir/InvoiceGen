@@ -11,8 +11,9 @@ type Company struct {
 	ContactNumber string `gorm:"not null"`
 	GSTNumber     string `gorm:"unique"`
 
-	Invoices []*Invoice `gorm:"references:CompanyId"`
-	Clients  []*Client  `gorm:"references:CompanyId"`
+	Invoices   []*Invoice   `gorm:"references:CompanyId"`
+	Clients    []*Client    `gorm:"references:CompanyId"`
+	AdminUsers []*AdminUser `gorm:"references:CompanyId"`
 
 	DefaultStruct
 }

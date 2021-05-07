@@ -4,14 +4,58 @@
 
 // Defaults
 
+.card {
+  color:#000;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --select-border: #777;
+  --select-focus: blue;
+  --select-arrow: var(--select-border);
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: contrast('disabled');
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: red;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: red;
+}
+
+select {
+  @extend %select-control;
+  &:hover {
+    @extend %input-controls-hover;
+  }
+}
+
+input, textarea, keygen {
+  @extend %input-controls;
+  &:hover {
+    @extend %input-controls-hover;
+  }
+}
+
+button:hover, button:focus {
+  @extend %button-style-hover;
+}
 button {
     cursor: pointer;
     border: 0px;
     padding: 10px 20px;
     @extend %button-style;
-}
-button:hover, button:focus {
-    @extend %button-style-hover;
+    @extend %user-controls;
 }
 
 a {
@@ -31,29 +75,28 @@ h3 {
     @extend %heading-3;
 }
 
-html,
+html {
+  font-size: 16px;
+}
+
 body {
-  font-size: 100%;
+  @extend %body-1;
   background-color: $primary-color;
   color: contrast();
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
 }
 
-#nav {
-  padding: 30px;
-}
 
 #nav a {
-  font-weight: bold;
-  color: contrast('primary');
+  font-weight: 300;
+  color: contrast();
 }
 
 #nav a.router-link-exact-active {
   color: $accent-sec-color;
+  font-weight: 700;
 }

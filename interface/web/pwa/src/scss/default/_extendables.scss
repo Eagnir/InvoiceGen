@@ -7,17 +7,77 @@
 
 @use 'fonts/poppins.scss';
 
+// Option B: Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../../../node_modules/bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+// 4. Include any optional Bootstrap components as you like
+@import "../../../node_modules/bootstrap/scss/root";
+@import "../../../node_modules/bootstrap/scss/reboot";
+@import "../../../node_modules/bootstrap/scss/type";
+@import "../../../node_modules/bootstrap/scss/card";
+//@import "../../../node_modules/bootstrap/scss/images";
+@import "../../../node_modules/bootstrap/scss/list-group";
+@import "../../../node_modules/bootstrap/scss/containers";
+@import "../../../node_modules/bootstrap/scss/grid";
+@import "../../../node_modules/bootstrap/scss/bootstrap-utilities.scss";
+
+
+//@import 'bootstrap/grid';
+//@import 'bootstrap/utils';
+//@import 'bootstrap/card';
+
+%user-controls {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+%input-controls {
+  @extend %user-controls;
+  -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
+  width: 100%;
+  line-height: 1.2rem;
+  border:1px solid transparent;
+  border-radius: 0px;
+  padding:10px 10px;
+  background-color: fn.contrast('hint');
+  border: 1px solid fn.contrast('disabled');
+  color:var.$accent-sec-color;
+  outline: transparent;
+}
+
+%input-controls-hover {
+  border:1px solid var.$accent-sec-color;
+}
+
+%select-control {
+  @extend %input-controls;
+  background: fn.contrast('hint') url("data:image/svg+xml;utf8,<svg fill='#{fn.contrast()}' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") right center;
+  background-repeat: no-repeat;
+  background-size: 40px;
+  //background-position-x: 100%;
+  //background-position-y: 0px;
+}
+
 %button-style {
-  font-size: 0.875rem;
 
   background-color: var.$accent-sec-color;
-  color: fn.override-contrast();
+  color: fn.override-contrast(var.$theme-mode-opp);
   border: 1px solid var.$accent-sec-color;
 }
 
 %button-style-hover {
   background-color: var.$secondary-color;
-  color: override-contrast();
+  color: fn.contrast();
   border-color: var.$secondary-color;
 }
 
@@ -34,40 +94,58 @@
 
 %heading-1 {
   font-family: unquote("Poppins");
-  font-size: 2.30rem;
+  font-size: 2.5rem;
   font-weight: 700;
 }
 
 %heading-2 {
   font-family: unquote("Poppins");
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 400;
 }
 
 %heading-3 {
   font-family: unquote("Poppins");
+  font-size: 1.75rem;
+  font-weight: 400;
+}
+
+%heading-4 {
+  font-family: unquote("Poppins");
   font-size: 1.5rem;
+  font-weight: 400;
+}
+
+%heading-5 {
+  font-family: unquote("Poppins");
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+%heading-6 {
+  font-family: unquote("Poppins");
+  font-size: 1rem;
   font-weight: 400;
 }
 
 %body-1 {
   font-family: unquote("Poppins");
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 %body-2 {
   font-family: unquote("Poppins");
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 %subtitle-1 {
   font-family: unquote("Poppins");
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 %subtitle-2 {
   font-family: unquote("Poppins");
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 %overline {

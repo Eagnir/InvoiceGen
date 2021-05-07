@@ -1,19 +1,12 @@
 @use 'variables' as var;
 
 @function contrast($type: 'primary') {
-    @if var.$is-theme-light {
-      @return map-get(map-get(var.$contrast-colors, 'light'), $type);
-    }
-    @return map-get(map-get(var.$contrast-colors, 'dark'), $type);
+  @return map-get(map-get(var.$contrast-colors, var.$theme-mode), $type);
   }
   
   @function override-contrast($background: '', $type: 'primary') {
     @if $background == '' {
-      @if var.$is-theme-light {
-        $background: 'dark';
-      } @else {
-        $background: 'light';
-      }
+      $background: var.$theme-mode;
     }
     @return map-get(map-get(var.$contrast-colors, $background), $type);
   }

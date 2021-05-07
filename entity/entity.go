@@ -1,7 +1,8 @@
 package entity
 
 import (
-	"encoding/json"
+	"bytes"
+	"encoding/gob"
 	"math/rand"
 	"strings"
 	"time"
@@ -37,13 +38,17 @@ type DefaultStruct struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func CopyProperties(source, destination interface{}) (interface{}, error) {
-	j, err := json.Marshal(source)
-	if err == nil {
-		err := json.Unmarshal(j, &destination)
-		return destination, err
+func (def *DefaultStruct) CopyProperties(source interface{}, destination interface{}) error {
+	buf := bytes.Buffer{}
+	err := gob.NewEncoder(&buf).Encode(source)
+	if err != nil {
+		return err
 	}
-	return nil, err
+	err = gob.NewDecoder(&buf).Decode(destination)
+	if err != nil {
+		return err
+	}
+	return err
 }
 
 //https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
@@ -77,24 +82,24 @@ func GenerateRandomStringOfSize(n int) string {
 func GenerateDefaultData() []interface{} {
 	res := []interface{}{}
 
-	adminUser, ex := NewAdminUser(
-		"Nirav Shah",
-		"nirav@ventureoneit.com",
-		"helloworld",
-	)
-	if ex == nil {
-		res = append(res, adminUser)
-	}
-
 	company, ex := NewCompany(
-		"VentureOne IT",
-		"Office #6, Sylvester Apt Dadabhai cross road #3, Vile Parle West, Mumbai 400054, Maharashtra, India.",
-		"nirav@ventureoneit.com",
-		"+91 9833500846",
-		"27BFKPS6236Q1ZH",
+		"AdventureCode Ltd",
+		"IT Plaza Dadabhai road, Malad West, Mumbai 400069, Maharashtra, India.",
+		"info@domain.com",
+		"+91 9833562829",
+		"27BFKPS1782Q2XX",
 	)
 	if ex == nil {
-		res = append(res, company)
+		adminUser, ex := NewAdminUser(
+			"Ethen Hunt",
+			"admin@domain.com",
+			"helloworld",
+		)
+		if ex == nil {
+			adminUser.SetCompany(company)
+			res = append(res, adminUser)
+		}
+		//res = append(res, company)
 	}
 
 	client, ex := NewClient(

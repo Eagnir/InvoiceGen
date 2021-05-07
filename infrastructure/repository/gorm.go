@@ -34,10 +34,11 @@ type DBContext struct {
 //NewUserMySQL create new repository
 func (ctx *DBContext) OpenContext() error {
 	if ctx.Context != nil {
-		err := ctx.CloseContext()
-		if err != nil {
-			return err
-		}
+		return nil // Connection Already Open
+		//err := ctx.CloseContext()
+		//if err != nil {
+		//	return err
+		//}
 	}
 	db, err := gorm.Open(sqlite.Open(SQLiteFilePath), DefaultConfig)
 	if err != nil {

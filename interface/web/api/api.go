@@ -31,6 +31,7 @@ func NewAPI(subdomain, domain, port string, e *echo.Echo) (*API, string) {
 			// Implement various handler for their functionality
 			&handler.Error{},
 			&handler.General{},
+			&handler.Auth{},
 		},
 	}
 	return api, subdomain + "." + domain + ":" + port

@@ -99,3 +99,17 @@ func (s *AdminUserService) Search(queryObject entity.AdminUser) ([]*entity.Admin
 	}
 	return objs, nil
 }
+
+func (s *AdminUserService) VerifyCredential(email string, password string) (*entity.AdminUser, error) {
+	s.repo.OpenContext()
+	defer s.repo.CloseContext()
+	obj := entity.AdminUser{}
+	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{Email: email, Password: password}).First(&obj)
+	if db.Error != nil {
+		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
+			return nil, exception.AdminUser_RecordNotFound
+		}
+		return nil, db.Error
+	}
+	return &obj, nil
+}

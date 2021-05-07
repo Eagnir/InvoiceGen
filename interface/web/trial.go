@@ -86,11 +86,11 @@ func trial() {
 		panic(er)
 	}
 	*/
-	niravUser, err := auService.GetEntityById(1)
+	user, err := auService.GetEntityById(1)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Hello " + niravUser.Email)
+	fmt.Println("Hello " + user.Email)
 
 	fmt.Println("----------------")
 

@@ -19,13 +19,11 @@ func (handler *General) HookEndpoints(e *echo.Echo) {
 }
 
 func version() echo.HandlerFunc {
+	callerFuncName := setting.GetCallerFunctionName()
 	return func(c echo.Context) error {
-		resp, err := apientity.NewAPIResponse()
-		if err != nil {
-			return err
-		}
+		resp := apientity.NewAPIResponse(callerFuncName)
 
-		resp.Status = setting.StatusSuccess
+		resp.SetStatus(setting.StatusSuccess)
 		resp.Message = "Version " + strconv.Itoa(setting.VersionMajor) + "." + strconv.Itoa(setting.VersionMinor)
 		resp.AddData(setting.VersionMajor)
 		resp.AddData(setting.VersionMinor)

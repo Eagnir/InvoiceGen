@@ -6,12 +6,12 @@ import (
 )
 
 func TestNewAdminUser_Success(t *testing.T) {
-	adminUser, ex := entity.NewAdminUser("Nirav", "nirav@ventureoneit.com", "abc1234")
+	adminUser, ex := entity.NewAdminUser("Ethen", "ethen@gmail.com", "abc1234")
 	if ex == nil {
-		if adminUser.Name != "Nirav" {
+		if adminUser.Name != "Ethen" {
 			t.Error("Name property not set properly")
 		}
-		if adminUser.Email != "nirav@ventureoneit.com" {
+		if adminUser.Email != "ethen@gmail.com" {
 			t.Error("Email property not set properly")
 		}
 		if adminUser.Password != "abc1234" {

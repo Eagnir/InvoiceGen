@@ -27,13 +27,10 @@ func apiErrorHandler(err error, c echo.Context) {
 		code = he.Code
 	}
 
-	resp, rerr := entity.NewAPIResponse()
-	if rerr != nil {
-		c.Logger().Error(rerr)
-		c.String(code, "Unknown Error Occured")
-	}
+	resp := entity.NewAPIResponse(setting.GetCallerFunctionName())
+
 	resp.SetStatus(setting.StatusFatalError)
-	resp.SetError(strconv.Itoa(code), "API Error "+strconv.Itoa(code), err)
+	resp.SetFatalError("ER"+strconv.Itoa(code), "API Error "+strconv.Itoa(code), err)
 	switch code {
 	case 500:
 		resp.Message = "Internal server error"
@@ -43,7 +40,9 @@ func apiErrorHandler(err error, c echo.Context) {
 		resp.Message = "Forbidden access"
 	case 404:
 		resp.Message = "API call does not exist"
+	case 405:
+		resp.Message = "API call not permitted for current method"
 	}
-	c.JSON(code, resp)
+	c.JSON(http.StatusOK, resp)
 	c.Logger().Error(err)
 }

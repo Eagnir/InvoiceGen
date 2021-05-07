@@ -1,6 +1,11 @@
 @use "sass:color";
 
-$is-theme-light: false;
+$theme-mode: 'dark';
+
+$theme-mode-opp: 'dark';
+@if $theme-mode == 'dark' {
+  $theme-mode-opp: 'light';
+}
 
 $primary-color: #206a5d; // 60%
 $secondary-color: #81b214; // 15% (+15% from ForegroundColor<Light/Dark>)

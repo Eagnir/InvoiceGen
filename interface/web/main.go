@@ -1,6 +1,8 @@
 package main
 
 import (
+	"InvoiceGen/entity"
+	"InvoiceGen/infrastructure/repository"
 	"InvoiceGen/interface/web/api"
 	"InvoiceGen/interface/web/pwa"
 	"context"
@@ -13,6 +15,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/color"
+	"gorm.io/gorm"
 )
 
 var DefaultPort string = "8080"
@@ -79,7 +82,28 @@ func (i *Config) SetToDefault() {
 
 var hosts map[string]HookInterface = map[string]HookInterface{}
 
+func confirmDBExist() {
+	os.Remove("test.db")
+
+	db := repository.DBContext{}
+	er := db.OpenContext()
+	if er != nil {
+		panic(er)
+	}
+	defer db.CloseContext()
+	db.Context.AutoMigrate(entity.AllModels...)
+	defaultData := entity.GenerateDefaultData()
+	db.Context.Transaction(func(tx *gorm.DB) error {
+		for _, model := range defaultData {
+			tx.Create(model)
+		}
+		return nil
+	})
+}
+
 func main() {
+	confirmDBExist()
+
 	c := color.New()
 
 	var activeInterfaces ConfigInterfaces

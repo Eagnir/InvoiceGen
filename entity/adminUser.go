@@ -7,6 +7,8 @@ import (
 type AdminUser struct {
 	AdminUserId int `gorm:"not null;primaryKey"`
 
+	CompanyId int `gorm:"default:null"`
+
 	Name     string `gorm:"not null;default:'Admin User'"`
 	Email    string `gorm:"not null;unique;"`
 	Password string `gorm:"not null;"`
@@ -14,6 +16,8 @@ type AdminUser struct {
 	AuthToken *UUID `gorm:"type:uuid;"`
 
 	Invoices []*Invoice `gorm:"references:AdminUserId"`
+
+	Company *Company `gorm:"references:CompanyId"`
 
 	DefaultStruct
 }
@@ -48,4 +52,10 @@ func NewAdminUser(name, email, password string) (*AdminUser, error) {
 		Password: password,
 	}
 	return u, nil
+}
+
+func (u *AdminUser) SetCompany(company *Company) error {
+	u.Company = company
+	u.CompanyId = company.CompanyId
+	return nil
 }

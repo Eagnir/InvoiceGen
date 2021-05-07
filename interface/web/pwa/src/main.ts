@@ -3,7 +3,19 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 
-import "@/scss/app.scss"
+// Filters
+import "./filters/IGDate";
+import "./filters/IGTime";
+import VueMoment from "vue-moment";
+import moment from "moment-timezone";
+
+//import "normalize.css"
+import "@/scss/app.scss";
+
+
+Vue.use(VueMoment, {
+  moment,
+})
 
 Vue.config.productionTip = false;
 

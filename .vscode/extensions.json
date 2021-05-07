@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "rangav.vscode-thunder-client",
+        "alexcvzz.vscode-sqlite",
+        "golang.go",
+        "octref.vetur"
+    ]
+}

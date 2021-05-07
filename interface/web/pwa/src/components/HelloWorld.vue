@@ -1,6 +1,69 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <h2>Heading 2</h2>
+    <h3>Heading 3</h3>
+    <h4>Heading 4</h4>
+    <h5>Heading 5</h5>
+    <h6>Heading 6</h6>
+
+    <outline>Outline</outline>
+    <caption>Caption</caption>
+
+<p>
+  paragraph tag with lots of text and long paragrahs filled by lorem ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <br><br>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<ul>
+  <li>List item 1 on row</li>
+  <li>List item 2 on row</li>
+  <li>List item 3 on row</li>
+  <li>List item 4 on row</li>
+  <li>List item 5 on row</li>
+</ul>
+<ol>
+  <li>List item 1 on row</li>
+  <li>List item 2 on row</li>
+  <li>List item 3 on row</li>
+  <li>List item 4 on row</li>
+  <li>List item 5 on row</li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <th>Ethen</th>
+      <th>Ethen@gmail.com</th>
+    </tr>
+    <tr>
+      <th>1</th>
+      <th>Ethen</th>
+      <th>Ethen@gmail.com</th>
+    </tr>
+    <tr>
+      <th>1</th>
+      <th>Ethen</th>
+      <th>Ethen@gmail.com</th>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Total</th>
+      <th>-</th>
+      <th>12345</th>
+    </tr>
+  </tfoot>
+</table>
+
         <button>Get Started!</button>
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
@@ -10,6 +73,13 @@
       >.
     </p>
     <h3>Installed CLI Plugins</h3>
+    <input type="text" placeholder="Email address">
+    <select aria-placeholder="Select country">
+      <option>India</option>
+      <option>United States</option>
+      <option>Canada</option>
+    </select>
+    <textarea placeholder="Type in your thoughts"></textarea>
     <ul>
       <li>
         <a
