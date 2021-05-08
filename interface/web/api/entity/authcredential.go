@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"InvoiceGen/entity"
 	"fmt"
 
 	"github.com/go-playground/locales/en"
@@ -10,14 +11,14 @@ import (
 )
 
 type (
-	Credential struct {
-		Email     string `json:"email" validate:"email"`
-		Password  string `json:"password"`
-		AuthToken string `json:"auth_token" validator:"uuid"`
+	AuthCredential struct {
+		Email     string      `json:"email" validate:"email"`
+		Password  string      `json:"password"`
+		AuthToken entity.UUID `json:"auth_token" validator:"uuid"`
 	}
 )
 
-func (cre *Credential) ValidateSelf() (errMessages []string, errs []error) {
+func (cre *AuthCredential) ValidateSelf() (errMessages []string, errs []error) {
 	valid := validator.New()
 	if vErr := valid.Struct(cre); vErr != nil {
 		english := en.New()

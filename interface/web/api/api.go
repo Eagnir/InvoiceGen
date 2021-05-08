@@ -9,13 +9,14 @@ import (
 
 type (
 	API struct {
-		Subdomain string
-		Domain    string
-		Port      string
-		Echo      *echo.Echo
-		Handlers  []interface{ HookHandler }
+		isInitialized bool
+		Subdomain     string
+		Domain        string
+		Port          string
+		Echo          *echo.Echo
+		Handlers      []interface{ APIHandler }
 	}
-	HookHandler interface {
+	APIHandler interface {
 		HookEndpoints(e *echo.Echo)
 	}
 )
@@ -27,7 +28,7 @@ func NewAPI(subdomain, domain, port string, e *echo.Echo) (*API, string) {
 		Domain:    domain,
 		Port:      port,
 		Echo:      e,
-		Handlers: []interface{ HookHandler }{
+		Handlers: []interface{ APIHandler }{
 			// Implement various handler for their functionality
 			&handler.Error{},
 			&handler.General{},
@@ -49,6 +50,11 @@ func (api *API) GetDomain() string {
 }
 func (api *API) GetPort() string {
 	return api.Port
+}
+
+func (api *API) AddHandler(handler APIHandler) {
+	api.Handlers = append(api.Handlers, handler)
+	handler.HookEndpoints(api.Echo)
 }
 
 func (api *API) HookHandlers() {

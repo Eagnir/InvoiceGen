@@ -2,6 +2,7 @@ package handler
 
 import (
 	"InvoiceGen/interface/web/api/entity"
+	apientity "InvoiceGen/interface/web/api/entity"
 	"InvoiceGen/interface/web/api/setting"
 	"net/http"
 	"reflect"
@@ -12,25 +13,35 @@ import (
 
 type (
 	Error struct {
+		isInitialized bool
 	}
 )
 
 func (handler *Error) HookEndpoints(e *echo.Echo) {
+	if handler.isInitialized {
+		return
+	}
+	handler.isInitialized = true
+
 	if reflect.ValueOf(e.HTTPErrorHandler).Pointer() == reflect.ValueOf(e.DefaultHTTPErrorHandler).Pointer() {
-		e.HTTPErrorHandler = apiErrorHandler
+		e.HTTPErrorHandler = handler.apiErrorHandler
 	}
 }
 
-func apiErrorHandler(err error, c echo.Context) {
+func (handler *Error) apiErrorHandler(err error, c echo.Context) {
+	eTag := apientity.APIErrorTag{
+		TagCode:   "ER",
+		TagNumber: 1,
+	}
+
 	code := http.StatusInternalServerError
 	if he, ok := err.(*echo.HTTPError); ok {
 		code = he.Code
 	}
 
-	resp := entity.NewAPIResponse(setting.GetCallerFunctionName())
+	resp := entity.NewAPIResponse(setting.GetCallerFunctionName(), c)
 
-	resp.SetStatus(setting.StatusFatalError)
-	resp.SetFatalError("ER"+strconv.Itoa(code), "API Error "+strconv.Itoa(code), err)
+	resp.SetError(eTag.StringWithCode(10, code), "API Error "+strconv.Itoa(code), nil, setting.StatusFatalError)
 	switch code {
 	case 500:
 		resp.Message = "Internal server error"
@@ -43,6 +54,7 @@ func apiErrorHandler(err error, c echo.Context) {
 	case 405:
 		resp.Message = "API call not permitted for current method"
 	}
-	c.JSON(http.StatusOK, resp)
+	//c.JSON(http.StatusOK, resp)
+	resp.Return()
 	c.Logger().Error(err)
 }

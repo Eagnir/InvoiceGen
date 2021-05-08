@@ -11,11 +11,11 @@ import (
 
 //AdminUser Service  interface
 type AdminUserService struct {
-	repo repository.DBContext
+	repo *repository.DBContext
 }
 
 //NewService create new use case
-func NewService(r repository.DBContext) *AdminUserService {
+func NewService(r *repository.DBContext) *AdminUserService {
 	return &AdminUserService{
 		repo: r,
 	}
@@ -105,6 +105,20 @@ func (s *AdminUserService) VerifyCredential(email string, password string) (*ent
 	defer s.repo.CloseContext()
 	obj := entity.AdminUser{}
 	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{Email: email, Password: password}).First(&obj)
+	if db.Error != nil {
+		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
+			return nil, exception.AdminUser_RecordNotFound
+		}
+		return nil, db.Error
+	}
+	return &obj, nil
+}
+
+func (s *AdminUserService) VerifyAuthToken(token entity.UUID) (*entity.AdminUser, error) {
+	s.repo.OpenContext()
+	defer s.repo.CloseContext()
+	obj := entity.AdminUser{}
+	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{AuthToken: &token}).First(&obj)
 	if db.Error != nil {
 		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 			return nil, exception.AdminUser_RecordNotFound

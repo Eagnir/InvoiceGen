@@ -31,6 +31,10 @@ type DBContext struct {
 	Context *gorm.DB
 }
 
+func NewDBContext() *DBContext {
+	return &DBContext{}
+}
+
 //NewUserMySQL create new repository
 func (ctx *DBContext) OpenContext() error {
 	if ctx.Context != nil {
