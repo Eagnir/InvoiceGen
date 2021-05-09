@@ -1,7 +1,6 @@
 package entity
 
 import (
-	"InvoiceGen/entity"
 	"fmt"
 
 	"github.com/go-playground/locales/en"
@@ -12,9 +11,8 @@ import (
 
 type (
 	AuthCredential struct {
-		Email     string      `json:"email" validate:"email"`
-		Password  string      `json:"password"`
-		AuthToken entity.UUID `json:"auth_token" validator:"uuid"`
+		Email    string `json:"email" validate:"omitempty,email"`
+		Password string `json:"password"`
 	}
 )
 

@@ -4,6 +4,7 @@ import (
 	"InvoiceGen/entity"
 	"InvoiceGen/entity/exception"
 	"InvoiceGen/infrastructure/repository"
+	"InvoiceGen/interface/web/api/setting"
 	"errors"
 
 	"gorm.io/gorm"
@@ -114,11 +115,31 @@ func (s *AdminUserService) VerifyCredential(email string, password string) (*ent
 	return &obj, nil
 }
 
-func (s *AdminUserService) VerifyAuthToken(token entity.UUID) (*entity.AdminUser, error) {
+func (s *AdminUserService) GenerateAuthToken(user *entity.AdminUser) error {
+	s.repo.OpenContext()
+	defer s.repo.CloseContext()
+	//obj := entity.AdminUser{}
+	db := s.repo.Context.Where(&entity.AdminUser{AdminUserId: user.AdminUserId}).First(user)
+	if db.Error != nil {
+		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
+			return exception.AdminUser_RecordNotFound
+		}
+		return db.Error
+	}
+	uuid := entity.NewUUID()
+	user.AuthToken = &uuid
+	db = s.repo.Context.Save(user)
+	if db.Error != nil {
+		return db.Error
+	}
+	return nil
+}
+
+func (s *AdminUserService) VerifyAuthTokenAndEmail(token entity.UUID, email string) (*entity.AdminUser, error) {
 	s.repo.OpenContext()
 	defer s.repo.CloseContext()
 	obj := entity.AdminUser{}
-	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{AuthToken: &token}).First(&obj)
+	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{AuthToken: &token, Email: email}).First(&obj)
 	if db.Error != nil {
 		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 			return nil, exception.AdminUser_RecordNotFound
@@ -126,4 +147,49 @@ func (s *AdminUserService) VerifyAuthToken(token entity.UUID) (*entity.AdminUser
 		return nil, db.Error
 	}
 	return &obj, nil
+}
+
+func (s *AdminUserService) ChangePassword(adminUser *entity.AdminUser, password string) error {
+	s.repo.OpenContext()
+	defer s.repo.CloseContext()
+	adminUser.Password = password
+	adminUser.AuthToken = nil
+	db := s.repo.Context.Save(adminUser)
+	if db.Error != nil {
+		return db.Error
+	}
+	return nil
+}
+func (s *AdminUserService) ResetPassword(email string) error {
+	s.repo.OpenContext()
+	defer s.repo.CloseContext()
+	obj := entity.AdminUser{}
+	db := s.repo.Context.Where(&entity.AdminUser{Email: email}).First(&obj)
+	if db.Error != nil {
+		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
+			return exception.AdminUser_RecordNotFound
+		}
+		return db.Error
+	}
+	token, err := entity.StringToUUID(setting.APIResetToken)
+	if err != nil {
+		return err
+	}
+	obj.AuthToken = &token
+	db = s.repo.Context.Save(&obj)
+	if db.Error != nil {
+		return db.Error
+	}
+	return nil
+}
+
+func (s *AdminUserService) InvalidateAuthToken(adminUser *entity.AdminUser) error {
+	s.repo.OpenContext()
+	defer s.repo.CloseContext()
+	adminUser.AuthToken = nil
+	db := s.repo.Context.Save(adminUser)
+	if db.Error != nil {
+		return db.Error
+	}
+	return nil
 }

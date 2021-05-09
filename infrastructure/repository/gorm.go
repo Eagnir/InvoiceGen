@@ -60,6 +60,7 @@ func (ctx *DBContext) CloseContext() error {
 	if err != nil {
 		return err
 	}
+	ctx.Context = nil
 	db.Close()
 	return nil
 }

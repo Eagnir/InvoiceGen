@@ -75,7 +75,7 @@ func (resp *APIResponse) Sanitize() {
 			resp.Error.Messages = nil
 		}
 	}
-	if resp.Data != nil && len(resp.Data) <= 0 {
+	if resp.Data == nil || len(resp.Data) <= 0 {
 		resp.Data = nil
 		resp.Pagination = nil
 	}
@@ -107,21 +107,23 @@ func (resp *APIResponse) SetError(errorNumber string, userMessage string, errorO
 		Messages:    []string{},
 	}
 
-	var arr []interface{}
-	switch reflect.TypeOf(errorObjects).Kind() {
-	case reflect.Slice:
-		for _, e := range errorObjects.([]error) {
-			er.Exceptions = append(er.Exceptions, e)
+	if errorObjects != nil {
+		var arr []interface{}
+		switch reflect.TypeOf(errorObjects).Kind() {
+		case reflect.Slice:
+			for _, e := range errorObjects.([]error) {
+				er.Exceptions = append(er.Exceptions, e)
+			}
+
+		default:
+			arr = append(arr, errorObjects)
+			er.Exceptions = arr
 		}
 
-	default:
-		arr = append(arr, errorObjects)
-		er.Exceptions = arr
-	}
-
-	for _, e := range er.Exceptions {
-		if v, ok := e.(error); ok {
-			er.Messages = append(er.Messages, v.Error())
+		for _, e := range er.Exceptions {
+			if v, ok := e.(error); ok {
+				er.Messages = append(er.Messages, v.Error())
+			}
 		}
 	}
 

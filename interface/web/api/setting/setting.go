@@ -8,6 +8,11 @@ import (
 const VersionMajor int = 1
 const VersionMinor int = 0
 
+const APIResetToken = "9f6a1c3e-7fe0-41d5-8ee3-52e0610f55cb"
+
+const APITokenKey = "token"
+const APIUserEmailKey = "email"
+
 //API Response Status
 const (
 	StatusSuccess = iota
