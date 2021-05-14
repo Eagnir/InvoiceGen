@@ -18,7 +18,7 @@ import (
 type (
 	AuthHeader struct {
 		Email       string            `json:"email" validate:"email"`
-		AuthToken   entity.UUID       `json:"token" validator:"uuid"`
+		AuthToken   *entity.UUID      `json:"token" validator:"uuid"`
 		AdminUserId int               `json:"-"`
 		AdminUser   *entity.AdminUser `json:"-"`
 	}
@@ -37,7 +37,7 @@ func NewAuthHeader(header http.Header, auService *adminUser.AdminUserService) (*
 
 	authHeader := &AuthHeader{
 		Email:     email,
-		AuthToken: token,
+		AuthToken: &token,
 	}
 	if auService != nil {
 		usr, err := auService.VerifyAuthTokenAndEmail(authHeader.AuthToken, authHeader.Email)

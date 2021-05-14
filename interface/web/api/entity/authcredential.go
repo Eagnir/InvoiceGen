@@ -11,8 +11,8 @@ import (
 
 type (
 	AuthCredential struct {
-		Email    string `json:"email" validate:"omitempty,email"`
-		Password string `json:"password"`
+		Email    string `json:"email" validate:"required,omitempty,email"`
+		Password string `json:"password" validate:"required"`
 	}
 )
 

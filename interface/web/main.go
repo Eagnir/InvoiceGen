@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/color"
 	"gorm.io/gorm"
 )
@@ -177,6 +178,7 @@ func main() {
 		}
 		return
 	})
+	e.Use(middleware.CORS())
 
 	// Start the server in a goroutine
 	go func() {

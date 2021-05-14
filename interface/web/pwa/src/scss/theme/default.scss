@@ -1,102 +1,39 @@
-@use 'customization' as *;
+@use 'customization'as *;
 
 // CSS Styles should be placed here
-
-// Defaults
-
-.card {
-  color:#000;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-:root {
-  --select-border: #777;
-  --select-focus: blue;
-  --select-arrow: var(--select-border);
-}
-
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: contrast('disabled');
-  opacity: 1; /* Firefox */
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: red;
-}
-
-::-ms-input-placeholder { /* Microsoft Edge */
-  color: red;
-}
-
-select {
-  @extend %select-control;
-  &:hover {
-    @extend %input-controls-hover;
-  }
-}
-
-input, textarea, keygen {
-  @extend %input-controls;
-  &:hover {
-    @extend %input-controls-hover;
-  }
-}
-
-button:hover, button:focus {
-  @extend %button-style-hover;
-}
-button {
-    cursor: pointer;
-    border: 0px;
-    padding: 10px 20px;
-    @extend %button-style;
-    @extend %user-controls;
-}
-
-a {
-    @extend %link-style;
-  }
-  a:hover {
-    @extend %link-style-hover;
-  }
-
-  h1 {
-      @extend %heading-1;
-  }
-  h2 {
-    @extend %heading-2;
-}
-h3 {
-    @extend %heading-3;
-}
-
 html {
   font-size: 16px;
+  height: 100%;
 }
 
 body {
   @extend %body-1;
   background-color: $primary-color;
   color: contrast();
+  height: 100%;
 }
 
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
 }
 
-
-#nav a {
-  font-weight: 300;
-  color: contrast();
+// Bootstrap Override
+.form-floating label {
+  color: gray;
+  font-size: 1rem;
 }
 
-#nav a.router-link-exact-active {
-  color: $accent-sec-color;
-  font-weight: 700;
+a {
+  text-decoration: none;
+}
+
+.wrap-text {
+  white-space: pre-line;
+}
+
+.nav-link:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.15);
 }

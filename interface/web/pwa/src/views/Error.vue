@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <img alt="logo" src="../assets/logo.png" />
     <h1>404 Resource Not Found</h1>
     <p>{{ this.$route.query.msg }}</p>
   </div>

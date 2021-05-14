@@ -1,0 +1,101 @@
+
+// Defaults
+
+.card {
+    color:#000;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --select-border: #777;
+    --select-focus: blue;
+    --select-arrow: var(--select-border);
+  }
+  
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: contrast('disabled');
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: red;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: red;
+  }
+  
+  select {
+    @extend %select-control;
+    &:hover {
+      @extend %input-controls-hover;
+    }
+  }
+  
+  input, textarea, keygen {
+    @extend %input-controls;
+    &:hover {
+      @extend %input-controls-hover;
+    }
+  }
+  
+  button:hover, button:focus {
+    @extend %button-style-hover;
+  }
+  button {
+      cursor: pointer;
+      border: 0px;
+      padding: 10px 20px;
+      @extend %button-style;
+      @extend %user-controls;
+  }
+  
+  a {
+      @extend %link-style;
+    }
+    a:hover {
+      @extend %link-style-hover;
+    }
+  
+    h1 {
+        @extend %heading-1;
+    }
+    h2 {
+      @extend %heading-2;
+  }
+  h3 {
+      @extend %heading-3;
+  }
+  
+  
+  
+  #nav a {
+    font-weight: 300;
+    color: contrast();
+  }
+  
+  #nav a.router-link-exact-active {
+    color: $accent-sec-color;
+    font-weight: 700;
+  }
+  
+  
+  .footer-notice {
+    font-size:0.8rem;
+  }
+  
+  .footer-notice svg {
+    margin-right:5px;
+    fill: contrast();
+    width:22px;
+    height:22px;
+  }
+  
+  .alert {
+    font-size:1rem;
+  }

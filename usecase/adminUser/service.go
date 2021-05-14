@@ -135,14 +135,14 @@ func (s *AdminUserService) GenerateAuthToken(user *entity.AdminUser) error {
 	return nil
 }
 
-func (s *AdminUserService) VerifyAuthTokenAndEmail(token entity.UUID, email string) (*entity.AdminUser, error) {
+func (s *AdminUserService) VerifyAuthTokenAndEmail(token *entity.UUID, email string) (*entity.AdminUser, error) {
 	s.repo.OpenContext()
 	defer s.repo.CloseContext()
 	obj := entity.AdminUser{}
-	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{AuthToken: &token, Email: email}).First(&obj)
+	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{AuthToken: token, Email: email}).First(&obj)
 	if db.Error != nil {
 		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
-			return nil, exception.AdminUser_RecordNotFound
+			return nil, exception.AdminUser_InvalidAuthToken
 		}
 		return nil, db.Error
 	}

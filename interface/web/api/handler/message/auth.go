@@ -26,3 +26,7 @@ var AuthSuccess_PasswordResetSuccessful = "Password reset successful"
 // Invalidate Handler Messages
 //    Success Messages
 var AuthSuccess_InvalidateSuccessful = "Logout successful"
+
+// Heartbeat Handler Messages
+//    Success Messages
+var AuthSuccess_HeartbeatSuccessful = "Heartbeat successful"

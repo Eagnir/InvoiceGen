@@ -38,7 +38,7 @@ type DefaultStruct struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (def *DefaultStruct) CopyProperties(source interface{}, destination interface{}) error {
+func CopyProperties(source interface{}, destination interface{}) error {
 	buf := bytes.Buffer{}
 	err := gob.NewEncoder(&buf).Encode(source)
 	if err != nil {

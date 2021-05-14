@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"InvoiceGen/entity"
 	"InvoiceGen/entity/exception"
 	"InvoiceGen/infrastructure/repository"
 	apientity "InvoiceGen/interface/web/api/entity"
@@ -32,6 +33,7 @@ func (handler *Auth) HookEndpoints(e *echo.Echo) {
 	handler.group.POST("/resetpassword", handler.resetpassword())
 	handler.group.POST("/changepassword", handler.changepassword())
 	handler.group.POST("/invalidate", handler.invalidate())
+	handler.group.POST("/heartbeat", handler.heartbeat())
 
 	handler.group.Any("/*", handler.catchAll())
 }
@@ -92,7 +94,7 @@ func (handler *Auth) credential() echo.HandlerFunc {
 		}
 
 		usrDTO := &dto.UserCredential{}
-		err = usr.CopyProperties(usr, usrDTO)
+		err = entity.CopyProperties(usr, usrDTO)
 		if err != nil {
 			return resp.SetErrorAndReturn(eTag.String(50), message.AuthError_GeneratingToken, err, setting.StatusFatalError)
 		}
@@ -219,6 +221,39 @@ func (handler *Auth) invalidate() echo.HandlerFunc {
 
 		// Return Response
 		if err := resp.SetResponse(message.AuthSuccess_InvalidateSuccessful, setting.StatusSuccess, nil); err != nil {
+			return resp.SetErrorAndReturn(eTag.String(100), message.AuthError_Unknown, err, setting.StatusFatalError)
+		}
+
+		return resp.Return()
+	}
+}
+
+func (handler *Auth) heartbeat() echo.HandlerFunc {
+	eTag := apientity.APIErrorTag{
+		TagCode:   "AU",
+		TagNumber: 5,
+	}
+	callerFuncName := setting.GetCallerFunctionName()
+	return func(c echo.Context) error {
+		// Create the response object with current command (function name) - Standard Call for all API calls
+		resp := apientity.NewAPIResponse(callerFuncName, c)
+
+		// Init Services
+		auService := adminUser.NewService(repository.NewDBContext())
+		// Get Authentication Headers
+		auth, err := apientity.NewAuthHeader(c.Request().Header, auService)
+		if err != nil {
+			return resp.SetErrorAndReturn(eTag.String(5), err.Error(), err, setting.StatusFailure)
+		}
+
+		usrDTO := &dto.UserCredential{}
+		err = entity.CopyProperties(auth.AdminUser, usrDTO)
+		if err != nil {
+			return resp.SetErrorAndReturn(eTag.String(40), message.AuthError_GeneratingToken, err, setting.StatusFatalError)
+		}
+
+		// Return Response
+		if err := resp.SetResponse(message.AuthSuccess_HeartbeatSuccessful, setting.StatusSuccess, usrDTO); err != nil {
 			return resp.SetErrorAndReturn(eTag.String(100), message.AuthError_Unknown, err, setting.StatusFatalError)
 		}
 
