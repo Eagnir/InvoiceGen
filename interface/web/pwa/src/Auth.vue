@@ -12,7 +12,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import NavBar from "@/views/NavBar.vue";
-import { API as igApi } from "@/IG/api";
 import { APIResponseStatus } from "./entity/response";
 import { Popover, Tooltip } from "bootstrap";
 
@@ -23,7 +22,7 @@ import { Popover, Tooltip } from "bootstrap";
 })
 export default class Auth extends Vue {
   beforeMount() {
-    igApi
+    this.$ig.api
       .heartbeat({
         RejectOnFailure: false,
       })
@@ -67,7 +66,7 @@ export default class Auth extends Vue {
         return;
       }
 
-      igApi
+      this.$ig.api
         .heartbeat({
           RejectOnFailure: false,
         })

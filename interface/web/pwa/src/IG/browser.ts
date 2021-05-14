@@ -1,7 +1,14 @@
 
+export interface BrowserInterface {
+
+    getOS():string;
+    getCtrlKeyForOS(): {short:string, value:string};
+
+}
+
 export class Browser {
 
-    static getOS() {
+    static getOS():string {
         const userAgent = window.navigator.userAgent,
             platform = window.navigator.platform,
             macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
@@ -23,22 +30,25 @@ export class Browser {
         return os;
     }
     
-    static  getCtrlKeyForOS(secondaryKey: string, showInTip: boolean = false) {
-        let keyMapping = "";
+    static  getCtrlKeyForOS(): {short:string, value:string} {
+        const keyMapping = {
+            short: "",
+            value:""
+        };
         switch (this.getOS()) {
             case "Mac OS":
-                keyMapping = "cmd + " + secondaryKey;
+                keyMapping.short = "opt";
+                keyMapping.value = "alt";
                 break;
             case "Windows":
             case "Linux":
-                keyMapping = "ctrl + " + secondaryKey;
+                keyMapping.short = "alt";
+                keyMapping.value = "alt";
                 break;
             default:
-                keyMapping = "ctrl + " + secondaryKey;
+                keyMapping.short = "alt";
+                keyMapping.value = "alt";
         }
-        if (showInTip)
-            return keyMapping;
-        else
-            return keyMapping.replaceAll("cmd", "command");
+        return keyMapping;
     }
 }

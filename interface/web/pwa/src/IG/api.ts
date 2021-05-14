@@ -23,7 +23,14 @@ export interface APIOptions {
 
 export class API {
 
-  private static defaultOption: APIOptions = {
+  private static _instance: API;
+
+  public static get Instance() {
+    return this._instance || (this._instance = new this());
+  }
+
+
+  private defaultOption: APIOptions = {
     AuthRequired: true,
     ShowToast: true,
     ShowSuccessToast: true,
@@ -33,20 +40,20 @@ export class API {
     ClearPreviousToasts: true
   }
 
-  private static getHeaders(): string[][] {
+  private getHeaders(): string[][] {
     const headers: any = {};
     headers["content-type"] = "application/json";
     return headers;
   }
 
-  private static getAuthHeaders(): string[][] {
+  private getAuthHeaders(): string[][] {
     const authHeaders: any = Object.assign({}, this.getHeaders());
     authHeaders["token"] = igApp.Instance.User.token;
     authHeaders["email"] = igApp.Instance.User.email;
     return authHeaders;
   }
 
-  private static postCall<T>(url: string, data?: any, option?: APIOptions): Promise<APIResponse<T>> {
+  private postCall<T>(url: string, data?: any, option?: APIOptions): Promise<APIResponse<T>> {
     option = Object.assign({}, this.defaultOption, option);
     const h: any = option.AuthRequired ? this.getAuthHeaders() : this.getHeaders();
     return fetch(url, {
@@ -111,8 +118,8 @@ export class API {
     }) as Promise<APIResponse<T>>;
   }
 
-  public static authCredential(email: string, passw: string, option?:APIOptions): Promise<APIResponse<UserCredential>> {
-    option = Object.assign({}, {AuthRequired:false}, option);
+  public authCredential(email: string, passw: string, option?: APIOptions): Promise<APIResponse<UserCredential>> {
+    option = Object.assign({}, { AuthRequired: false }, option);
     return this.postCall<UserCredential>(
       APIUrl.Auth_Credential,
       {
@@ -131,8 +138,9 @@ export class API {
       })
   }
 
-  public static heartbeat(option?:APIOptions): Promise<APIResponse<UserCredential>> {
-    option = Object.assign({}, {ShowToast:false}, option);
+  public heartbeat(option?: APIOptions): Promise<APIResponse<UserCredential>> {
+    //if (igApp.Instance.User == null) return Promise.reject();
+    option = Object.assign({}, { ShowToast: false }, option);
     return this.postCall<UserCredential>(APIUrl.Auth_Heartbeat, null, option)
       .then(resp => {
         if (resp.Status != APIResponseStatus.StatusSuccess) {
@@ -150,7 +158,7 @@ export class API {
       })
   }
 
-  public static signout(option?:APIOptions): Promise<APIResponse<UserCredential>> {
+  public signout(option?: APIOptions): Promise<APIResponse<UserCredential>> {
     option = Object.assign({}, option);
     return this.postCall<UserCredential>(APIUrl.Auth_Invalidate)
       .then(resp => {

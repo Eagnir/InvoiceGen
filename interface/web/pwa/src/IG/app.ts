@@ -1,14 +1,4 @@
 
-declare module '@/IG/App' {
-    interface VueConstructor {
-      $igApp: App
-    }
-  
-    interface Vue {
-      $igApp: App
-    }
-  }
-
 export class App {
     private static _instance: App;
 

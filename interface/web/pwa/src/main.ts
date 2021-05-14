@@ -16,21 +16,11 @@ import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
 //import 'vue-toast-notification/dist/theme-sugar.css';
 
+
+import IGPlugin from "@/IG/igPlugin";
+Vue.use(IGPlugin);
+
 import VueHotkey from 'v-hotkey';
-
-//import "@/IG/app";
-//import { API as igApi } from "@/IG/api";
-//import { Server as igServer } from "@/IG/server";
-//import { Browser as igBrowser } from "@/IG/browser";
-
-//Vue.prototype.$igApi = igApp;
-//Vue.prototype.$igApi = igApi;
-//Vue.prototype.$igServer = igServer;
-//Vue.prototype.$igBrowser = igBrowser;
-
-//Vue.use(App,{})
-
-
 
 Vue.use(VueHotkey)
 import "bootstrap";
@@ -45,6 +35,10 @@ Vue.use(VueToast,{
 });
 
 Vue.config.productionTip = false;
+
+Vue.config.ignoredElements = [
+  'keymapped'
+]
 
 new Vue({
   router,

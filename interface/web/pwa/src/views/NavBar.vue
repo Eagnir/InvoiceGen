@@ -14,7 +14,14 @@
     <hr />
     <ul class="nav nav-pills flex-column mb-auto">
       <li>
-        <button class="btn btn-warning w-100" v-hotkey.stop="keymap_createInvoice" @click="createInvoice" data-bs-toggle="tooltip" data-bs-placement="right" title="Ctrl + I" data-bs-content="Create a new invoice from anywhere on the site.">
+        <button
+          class="btn btn-warning w-100"
+          @click="createInvoice"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          :title="this.$ig.keymap.CreateInvoice()"
+          v-hotkey.stop="this.$ig.keymap.CreateInvoice(this.createInvoice)"
+        >
           <i class="bi-plus-square"></i> Create Invoice
         </button>
       </li>
@@ -22,23 +29,52 @@
         <hr />
       </li>
       <li>
-        <router-link to="/auth/" exact class="nav-link text-white"  data-bs-toggle="tooltip" data-bs-placement="right" title="View an overview of your company standing"
-          ><i class="bi-clipboard-data me-3"></i> Dashboard</router-link
+        <router-link
+          to="/auth/dashboard"
+          exact
+          class="nav-link text-white"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          :title="this.$ig.keymap.NavDashboard()"
+          v-hotkey.stop="this.$ig.keymap.NavDashboard(this.NavTo('Dashboard'))"
+          ><i class="bi-clipboard-data me-3"></i>
+          <keymapped>D</keymapped>ashboard</router-link
         >
       </li>
       <li>
-        <router-link to="/auth/invoices" class="nav-link text-white"  data-bs-toggle="tooltip" data-bs-placement="right" title="View and manage invoices"
-          ><i class="bi-receipt-cutoff me-3"></i> Invoices</router-link
+        <router-link
+          to="/auth/invoices"
+          class="nav-link text-white"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          :title="this.$ig.keymap.NavInvoices()"
+          v-hotkey.stop="this.$ig.keymap.NavInvoices(this.NavTo('Invoices'))"
+          ><i class="bi-receipt-cutoff me-3"></i>
+          <keymapped>I</keymapped>nvoices</router-link
         >
       </li>
       <li>
-        <router-link to="/auth/clients" class="nav-link text-white" data-bs-toggle="tooltip" data-bs-placement="right" title="View and manage clients"
-          ><i class="bi-people me-3"></i> Clients</router-link
+        <router-link
+          to="/auth/clients"
+          class="nav-link text-white"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          :title="this.$ig.keymap.NavClients()"
+          v-hotkey.stop="this.$ig.keymap.NavClients(this.NavTo('Clients'))"
+          ><i class="bi-people me-3"></i>
+          <keymapped>C</keymapped>lients</router-link
         >
       </li>
       <li>
-        <router-link to="/auth/reports" class="nav-link text-white" data-bs-toggle="tooltip" data-bs-placement="right" title="View and download reports"
-          ><i class="bi-file-earmark-text me-3"></i> Reports</router-link
+        <router-link
+          to="/auth/reports"
+          class="nav-link text-white"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          :title="this.$ig.keymap.NavReports()"
+          v-hotkey.stop="this.$ig.keymap.NavReports(this.NavTo('Reports'))"
+          ><i class="bi-file-earmark-text me-3"></i>
+          <keymapped>R</keymapped>eports</router-link
         >
       </li>
     </ul>
@@ -68,25 +104,75 @@
         aria-labelledby="dropdownUser1"
       >
         <li>
-          <router-link to="/auth/about" class="nav-link text-white" data-bs-toggle="tooltip" data-bs-placement="right" title="View details about this site"
+          <router-link
+            to="/auth/about"
+            class="nav-link text-white"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="View details about this site"
             ><i class="bi-info-square me-1"></i> About</router-link
           >
         </li>
         <li>
-          <router-link to="/auth/settings" class="nav-link text-white" data-bs-toggle="tooltip" data-bs-placement="right" title="Change settings"
-            ><i class="bi-gear me-1"></i> Settings</router-link
+          <router-link
+            to="/auth/settings"
+            class="nav-link text-white"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            :title="this.$ig.keymap.NavSettings()"
+            v-hotkey.stop="this.$ig.keymap.NavSettings(this.NavTo('Settings'))"
+            ><i class="bi-gear me-1"></i>
+            <keymapped>S</keymapped>ettings</router-link
           >
         </li>
         <li><hr class="dropdown-divider" /></li>
         <li>
-          <a class="dropdown-item" href="#" @click.prevent="signout" data-bs-toggle="tooltip" data-bs-placement="right" title="Sign out from your account"
-            ><i class="bi-door-open me-1"></i> Sign out</a
+          <a
+            :title="this.$ig.keymap.SignOut()"
+            v-hotkey.stop="this.$ig.keymap.SignOut(this.confirmSignOut)"
+            class="dropdown-item"
+            href="#"
+            @click.prevent="confirmSignOut"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            ><i class="bi-door-open me-1"></i> Sign
+            <keymapped>o</keymapped>ut</a
           >
         </li>
       </ul>
     </div>
-  </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="confirmSignOut" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Confirm Signing Out
+            </h5>
+          </div>
+          <div class="modal-body">Do you really want to sign out?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary confirm"
+              autofocus
+              @click="signout"
+            >
+              Yes, Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -136,6 +222,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { API as igApi } from "@/IG/api";
 import { App as igApp, UserCredential } from "@/IG/app";
 import { APIResponseStatus } from "@/entity/response";
+import { Modal } from "bootstrap";
 
 @Component({
   components: {},
@@ -144,29 +231,39 @@ export default class Home extends Vue {
   userName: string = "";
   companyName: string = "";
 
+  signOutConfirmationPopup: Modal;
+
   public mounted() {
     this.userName = igApp.Instance.User.name;
     this.companyName = igApp.Instance.User.company.name;
-    //this.AutoLogin();
 
-    //console.log(Toast);
-    
-
-    /* var toastElList = [].slice.call(document.querySelectorAll(".toast"));
-    var toastList = toastElList.map(function (toastEl) {
-      var t = new Toast(toastEl);
-      return t;
-    }); */
+    const el = document.getElementById("confirmSignOut");
+    this.signOutConfirmationPopup = new Modal(el);
+    el.addEventListener("shown.bs.modal", function (event) {
+      var x:HTMLElement = el.querySelector(".confirm");
+      x.focus();
+    });
   }
 
   createInvoice() {
     alert("Hello World");
+  }
 
-    //
+  NavTo(routeName: string) {
+    return () => {
+      if (this.$router.currentRoute.name != routeName) {
+        this.$router.push({ name: routeName });
+      } else this.$toast.info("You are already in " + routeName);
+    };
+  }
+
+  confirmSignOut() {
+    this.signOutConfirmationPopup.show();
   }
 
   signout() {
-    igApi.signout().then((resp) => {
+    this.signOutConfirmationPopup.hide();
+    this.$ig.api.signout().then((resp) => {
       this.$router.push({ name: "Login" });
     });
   }

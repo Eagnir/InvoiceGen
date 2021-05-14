@@ -6,14 +6,13 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { API as igApi } from "@/IG/api";
 import { APIResponseStatus } from "./entity/response";
 
 @Component({
 })
 export default class App extends Vue {
   beforeMount() {
-    igApi
+    this.$ig.api
       .heartbeat({
         RejectOnFailure: false,
       })
@@ -32,7 +31,7 @@ export default class App extends Vue {
         return;
       }
       
-      igApi
+      this.$ig.api
         .heartbeat({
           RejectOnFailure: false,
         })

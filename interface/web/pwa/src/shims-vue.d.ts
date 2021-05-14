@@ -1,5 +1,3 @@
-import { App } from "@/IG/App";
-
 declare module "*.vue" {
   import Vue from "vue";
   export default Vue;
@@ -16,11 +14,4 @@ declare module 'v-hotkey' {
   const plugin: Plugin;
 
   export default plugin;
-}
-
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    $igApp: App
-  }
 }

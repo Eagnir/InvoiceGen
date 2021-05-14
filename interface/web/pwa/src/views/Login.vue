@@ -90,7 +90,7 @@ export default class Home extends Vue {
   private AutoLogin() {
     var usr = igApp.Instance.User;
     if (usr != null) {
-      igApi.heartbeat().then((resp) => {
+      this.$ig.api.heartbeat().then((resp) => {
         this.$toast.info("Your session has been continued")
         this.$router.push({ name: "Home" });
       });
@@ -98,7 +98,7 @@ export default class Home extends Vue {
   }
 
   private onLogin(): void {
-    igApi.authCredential(this.email, this.passw).then((resp) => {
+    this.$ig.api.authCredential(this.email, this.passw).then((resp) => {
       igApp.Instance.User = resp.Data?.pop();
       this.$router.push({ name: "Home" });
     });
