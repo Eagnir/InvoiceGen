@@ -7,17 +7,16 @@ import (
 type AdminUser struct {
 	AdminUserId int `gorm:"not null;primaryKey"`
 
-	CompanyId int `gorm:"default:null"`
-
 	Name     string `gorm:"not null;default:'Admin User'"`
 	Email    string `gorm:"not null;unique;"`
 	Password string `gorm:"not null;"`
 
 	AuthToken *UUID `gorm:"type:uuid;"`
 
-	Invoices []*Invoice `gorm:"references:AdminUserId"`
+	CompanyId int `gorm:"default:null"`
 
-	Company *Company `gorm:"references:CompanyId"`
+	Invoices []*Invoice
+	Company  *Company
 
 	DefaultStruct
 }
@@ -32,11 +31,14 @@ func (obj *AdminUser) Validate() error {
 	if obj.Password == "" {
 		return exception.AdminUser_RequiredField_Password
 	}
+	if obj.Company == nil {
+		return exception.AdminUser_RequiredField_Company
+	}
 
 	return nil
 }
 
-func NewAdminUser(name, email, password string) (*AdminUser, error) {
+func NewAdminUser(name, email, password string, company *Company) (*AdminUser, error) {
 	if name == "" {
 		return nil, exception.AdminUser_RequiredField_Name
 	}
@@ -46,16 +48,20 @@ func NewAdminUser(name, email, password string) (*AdminUser, error) {
 	if password == "" {
 		return nil, exception.AdminUser_RequiredField_Password
 	}
+	if company == nil {
+		return nil, exception.AdminUser_RequiredField_Company
+	}
 	u := &AdminUser{
 		Name:     name,
 		Email:    email,
 		Password: password,
+		Company:  company,
 	}
 	return u, nil
 }
 
-func (u *AdminUser) SetCompany(company *Company) error {
-	u.Company = company
-	u.CompanyId = company.CompanyId
+func (obj *AdminUser) SwitchCompany(company *Company) error {
+	obj.Company = company
+	obj.CompanyId = company.CompanyId
 	return nil
 }

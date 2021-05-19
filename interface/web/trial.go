@@ -60,7 +60,7 @@ func trial() {
 		return nil
 	})
 
-	auService := adminUser.NewService(db)
+	auService := adminUser.NewService(repository.NewDBContext())
 
 	obj, err := entity.NewAdminUser("Trial Account", "Trial@gmail.com", "123")
 	if err != nil {

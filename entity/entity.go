@@ -12,6 +12,7 @@ import (
 )
 
 var AllModels = []interface{}{
+	&Currency{},
 	&AdminUser{},
 	&Client{},
 	&Company{},
@@ -82,53 +83,83 @@ func GenerateRandomStringOfSize(n int) string {
 func GenerateDefaultData() []interface{} {
 	res := []interface{}{}
 
+	curINR, ex := NewCurrency("INR", 1)
+	if ex == nil {
+		res = append(res, curINR)
+	}
+	curUSD, ex := NewCurrency("USD", 0.014)
+	if ex == nil {
+		res = append(res, curUSD)
+	}
+
 	company, ex := NewCompany(
 		"AdventureCode Ltd",
 		"IT Plaza Dadabhai road, Malad West, Mumbai 400069, Maharashtra, India.",
 		"info@domain.com",
 		"+91 9833562829",
 		"27BFKPS1782Q2XX",
+		curINR,
 	)
 	if ex == nil {
-		adminUser, ex := NewAdminUser(
-			"Ethen Hunt",
-			"admin@domain.com",
-			"helloworld",
-		)
-		if ex == nil {
-			adminUser.SetCompany(company)
-			res = append(res, adminUser)
-		}
-		//res = append(res, company)
+		res = append(res, company)
+	}
+
+	adminUser, ex := NewAdminUser(
+		"Ethen Hunt",
+		"admin@domain.com",
+		"helloworld",
+		company,
+	)
+	if ex == nil {
+		res = append(res, adminUser)
 	}
 
 	client, ex := NewClient(
-		"Abc Inc.",
+		"Abc Inc. (National)",
 		"Office #20, Silver Star IT Park, Andheri West, Mumbai 400058, Maharashtra, India.",
 		"abc@gmail.com",
 		"+91 9877374937",
-		"",
+		"27BFKPS1283Q2AA",
+		curINR,
+		company,
 	)
 	if ex == nil {
 		res = append(res, client)
 	}
 
-	igst, ex := NewTax("Integrated GST", "IGST", 18)
+	client2, ex := NewClient(
+		"John & Sons (International)",
+		"Office #101, New York, New York 10012, United States of America.",
+		"jsons@gmail.com",
+		"+01 555 192-2028",
+		"",
+		curUSD,
+		company,
+	)
 	if ex == nil {
-		igst.SetNewTaxGroup("Integrated GST", "IGST")
-		res = append(res, igst)
+		res = append(res, client2)
 	}
 
-	gst, ex := NewTaxGroup("Goods & Service Tax", "GST")
+	igstGroup, ex := NewTaxGroup("Integrated GST", "IGST")
 	if ex == nil {
-		sgst, ex := NewTax("State GST", "SGST", 9)
+		res = append(res, igstGroup)
+
+		igst, ex := NewTax("Integrated GST", "IGST", 18, igstGroup)
 		if ex == nil {
-			sgst.SetTaxGroup(gst)
+			res = append(res, igst)
+		}
+	}
+
+	gstGroup, ex := NewTaxGroup("Goods & Service Tax", "GST")
+	if ex == nil {
+		res = append(res, gstGroup)
+
+		sgst, ex := NewTax("State GST", "SGST", 9, gstGroup)
+		if ex == nil {
 			res = append(res, sgst)
 		}
-		cgst, ex := NewTax("Central GST", "CGST", 9)
+		cgst, ex := NewTax("Central GST", "CGST", 9, gstGroup)
 		if ex == nil {
-			cgst.SetTaxGroup(gst)
 			res = append(res, cgst)
 		}
 	}

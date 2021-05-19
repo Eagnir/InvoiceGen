@@ -1,16 +1,16 @@
 @use "sass:color";
 
-$theme-mode: 'dark';
+$theme-mode: 'light';
 
 $theme-mode-opp: 'dark';
 @if $theme-mode == 'dark' {
   $theme-mode-opp: 'light';
 }
 
-$primary-color: #206a5d; // 60%
-$secondary-color: #81b214; // 15% (+15% from ForegroundColor<Light/Dark>)
-$accent-sec-color: #ffcc29; // 10%
-$accent-pri-color: #f58634; // 10%
+$primary-color: #ffffff; // 60% - background color
+$secondary-color: #2ec4b6; // 15% (+15% from ForegroundColor<Light/Dark>)
+$accent-sec-color: #5e6472; // 10% - Input text color
+$accent-pri-color: #ff9f1c; // 10% - Button and link color
 
 
 $positive-color: green;

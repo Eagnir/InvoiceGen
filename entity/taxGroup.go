@@ -8,8 +8,8 @@ type TaxGroup struct {
 	Name      string `gorm:"unique;not null"`
 	ShortName string `gorm:"unique;not null"`
 
-	Invoices []*Invoice `gorm:"foreignKey:TaxGroupId;"`
-	Taxes    []*Tax     `gorm:"foreignKey:TaxGroupId;"`
+	Invoices []*Invoice //`gorm:"foreignKey:TaxGroupId;"`
+	Taxes    []*Tax     //`gorm:"foreignKey:TaxGroupId;"`
 
 	DefaultStruct
 }

@@ -1,3 +1,4 @@
+import { Popover, Tooltip } from "bootstrap";
 
 export class App {
     private static _instance: App;
@@ -43,6 +44,42 @@ export class App {
             console.log(ex);
         }
         return false;
+    }
+
+    initBS() {
+        this.initBSTooltips();
+        this.initBSPopovers();
+    }
+
+    initBSTooltips() {
+        //Tooltips
+        const tooltipTriggerList = [].slice.call(
+            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        );
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            let inst = Tooltip.getInstance(tooltipTriggerEl);
+            if (inst == null) {
+                inst = new Tooltip(tooltipTriggerEl, {
+                    delay: { show: 100, hide: 10 }, trigger: "hover"
+                });
+            }
+            return inst;
+        });
+    }
+
+    initBSPopovers() {
+        //Popovers
+        const popoverTriggerList = [].slice.call(
+            document.querySelectorAll('[data-bs-toggle="popover"]')
+        );
+        const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            let inst = Popover.getInstance(popoverTriggerEl);
+            if (inst == null) {
+                inst = new Popover(popoverTriggerEl);
+            }
+            return inst;
+        });
+
     }
 }
 

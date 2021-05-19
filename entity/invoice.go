@@ -15,6 +15,7 @@ type Invoice struct {
 	AdminUserId int `gorm:"not null"`
 	ClientId    int `gorm:"not null"`
 	CompanyId   int `gorm:"not null"`
+	CurrencyId  int `gorm:"not null"`
 	TaxGroupId  *int
 
 	TaxableAmount float32       `gorm:"not null"`
@@ -25,12 +26,12 @@ type Invoice struct {
 
 	InvoiceItems []*InvoiceItem `gorm:"not null;foreignKey:InvoiceId"`
 
-	AdminUser *AdminUser `gorm:"references:AdminUserId;"`
-	Client    *Client    `gorm:"references:ClientId;"`
-	Company   *Company   `gorm:"references:CompanyId;"`
-	TaxGroup  *TaxGroup  `gorm:"references:TaxGroupId;"`
+	AdminUser *AdminUser
+	Client    *Client
+	Company   *Company
+	Currency  *Currency
+	TaxGroup  *TaxGroup
 
-	//CustomFields []*CustomField `gorm:"many2many:invoice_custom_fields;"`
 	Tags []*Tag `gorm:"many2many:invoice_tags;"`
 
 	DefaultStruct

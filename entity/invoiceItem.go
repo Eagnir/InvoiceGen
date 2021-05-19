@@ -14,8 +14,7 @@ type InvoiceItem struct {
 	Rate               float32 `gorm:"not null;"`
 	TaxableAmount      float32 `gorm:"not null;"`
 
-	Invoice *Invoice `gorm:"references:InvoiceId;"`
-	//CustomFields []*CustomField `gorm:"many2many:invoice_items_custom_fields;"`
+	Invoice *Invoice
 
 	DefaultStruct
 }

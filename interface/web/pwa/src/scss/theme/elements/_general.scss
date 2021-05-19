@@ -1,0 +1,60 @@
+@use '../../default/extendables'as *;
+
+@use './bootstrap_override';
+
+html {
+    font-size: 16px;
+    height: 100%;
+}
+
+body {
+    @extend %body;
+    height: 100%;
+}
+
+#app {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+}
+
+keymap {
+    text-decoration: underline;
+    color: $accent-pri-color;
+}
+
+.wrap-text {
+    white-space: pre-line;
+}
+
+.nofocus:focus {
+    color: initial !important;
+}
+
+.content-panel {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.text-white,
+.text-dark {
+    small {
+        color: inherit;
+    }
+}
+
+.card-title {
+    small {
+        display:block;
+        font-size:0.75rem;
+    }
+}
+
+small {
+    color: contrast('disabled');
+    font-size:0.85rem;
+}
+
+.card-stats {
+    line-height: 18px;
+}

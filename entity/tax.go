@@ -11,7 +11,7 @@ type Tax struct {
 
 	TaxGroupId int `gorm:"not null"`
 
-	TaxGroup *TaxGroup `gorm:"references:TaxGroupId;"`
+	TaxGroup *TaxGroup
 
 	DefaultStruct
 }
@@ -26,11 +26,14 @@ func (obj *Tax) Validate() error {
 	if obj.Percentage <= 0 {
 		return exception.Tax_RequiredField_Percentage
 	}
+	if obj.TaxGroup == nil {
+		return exception.Tax_RequiredField_TaxGroup
+	}
 
 	return nil
 }
 
-func NewTax(name, shortName string, percentage float32) (*Tax, error) {
+func NewTax(name, shortName string, percentage float32, taxGroup *TaxGroup) (*Tax, error) {
 	if name == "" {
 		return nil, exception.Tax_RequiredField_Name
 	}
@@ -40,20 +43,24 @@ func NewTax(name, shortName string, percentage float32) (*Tax, error) {
 	if percentage <= 0 {
 		return nil, exception.Tax_RequiredField_Percentage
 	}
+	if taxGroup == nil {
+		return nil, exception.Tax_RequiredField_TaxGroup
+	}
 	u := &Tax{
 		Name:       name,
 		ShortName:  shortName,
 		Percentage: percentage,
+		TaxGroup:   taxGroup,
 	}
 	return u, nil
 }
 
-func (tax *Tax) SetTaxGroup(taxGroup *TaxGroup) error {
+func (tax *Tax) SwitchTaxGroup(taxGroup *TaxGroup) error {
 	tax.TaxGroup = taxGroup
 	return nil
 }
 
-func (tax *Tax) SetNewTaxGroup(name, shortName string) error {
+/* func (tax *Tax) SetNewTaxGroup(name, shortName string) error {
 	taxGroup, ex := NewTaxGroup(name, shortName)
 	if ex == nil {
 		tax.SetTaxGroup(taxGroup)
@@ -62,3 +69,4 @@ func (tax *Tax) SetNewTaxGroup(name, shortName string) error {
 	}
 	return nil
 }
+*/

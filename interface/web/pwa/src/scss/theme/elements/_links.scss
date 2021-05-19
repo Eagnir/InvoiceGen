@@ -1,0 +1,11 @@
+@use '../../default/extendables'as *;
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: contrast();
+}
+
+a:hover {
+    color: $accent-pri-color;
+}

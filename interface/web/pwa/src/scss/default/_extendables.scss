@@ -7,6 +7,18 @@
 
 @use 'fonts/poppins.scss';
 
+
+$primary: var.$accent-pri-color;
+$secondary:  var.$accent-sec-color;
+$body-color: fn.contrast();
+$body-bg: var.$primary-color;
+
+$input-bg:fn.contrast('hint');
+$input-border-color: fn.contrast('disabled');
+$input-color:var.$accent-sec-color;
+$input-focus-border-color:$secondary;
+$input-focus-box-shadow: -4px 0px;
+
 // Option B: Include parts of Bootstrap
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
@@ -109,12 +121,7 @@
   font-weight: 400;
 }
 
-%body-1 {
-  font-family: unquote("Poppins");
-  font-size: 1.2rem;
-}
-
-%body-2 {
+%body {
   font-family: unquote("Poppins");
   font-size: 1rem;
 }

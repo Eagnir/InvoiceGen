@@ -62,7 +62,7 @@ func main() {
 		switch strings.ToLower(*listEntity) {
 		case "adminusers":
 
-			auService := adminUser.NewService(db)
+			auService := adminUser.NewService(repository.NewDBContext())
 			users, err := auService.ListAll()
 			if err != nil {
 				panic(err)

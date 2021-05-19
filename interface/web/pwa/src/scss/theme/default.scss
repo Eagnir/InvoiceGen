@@ -1,48 +1,8 @@
 @use 'customization'as *;
 
 // CSS Styles should be placed here
-html {
-  font-size: 16px;
-  height: 100%;
-}
 
-body {
-  @extend %body-1;
-  background-color: $primary-color;
-  color: contrast();
-  height: 100%;
-}
 
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  height: 100%;
-}
 
-// Bootstrap Override
-.form-floating label {
-  color: gray;
-  font-size: 1rem;
-}
 
-a {
-  text-decoration: none;
-}
 
-.wrap-text {
-  white-space: pre-line;
-}
-
-.nav .nav-link:hover {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-keymapped {
-  text-decoration: underline;
-  color:$accent-pri-color;
-}
-
-.modal {
-  color: override-contrast($theme-mode-opp);
-}

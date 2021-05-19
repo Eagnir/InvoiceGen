@@ -1,9 +1,7 @@
 <template>
-  <div class="d-flex flex-row h-100">
-    <div>
-      <NavBar></NavBar>
-    </div>
-    <div class="flex-fill">
+  <div class="root-panel">    
+    <NavBar></NavBar>
+    <div class="flex-fill p-lg-5 p-3 content-panel">
       <router-view />
     </div>
   </div>
@@ -34,30 +32,10 @@ export default class Auth extends Vue {
       });
   }
 
-  initBS() {
-    //Tooltips
-    var tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new Tooltip(tooltipTriggerEl, {
-        delay: { show: 1000, hide: 0 },
-      });
-    });
-
-    //Popovers
-    var popoverTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="popover"]')
-    );
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-      return new Popover(popoverTriggerEl);
-    });
-  }
-
   mounted() {
-    this.initBS();
+    this.$ig.app.initBS();
     this.$router.afterEach((to, from) => {
-      this.initBS();
+      this.$ig.app.initBS();
     });
 
     this.$router.beforeEach((to, from, next) => {

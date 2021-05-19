@@ -1,5 +1,20 @@
 @forward '../default/extendables';
 
-@use '../default/extendables';
+@use '../default/extendables'as *;
 
 // Custom/modified placeholders should be kept in this file
+
+// General Style
+@use './elements/general';
+
+// Sidebar Styles
+@use './elements/sidebar';
+
+// Modal Style
+@use './elements/modal';
+
+// Link Style
+@use './elements/links';
+
+// Form Style
+@use './elements/form_elements';

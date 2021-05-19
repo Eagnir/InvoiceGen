@@ -3,6 +3,7 @@ import { Browser as igBrowser } from "@/IG/browser";
 export interface KeymapInterface {
     CreateInvoice(func: any): any;
     SignOut(func: any): any;
+    ToggleSidebar(func: any): any;
     
     NavDashboard(func: any): any;
     NavInvoices(func: any): any;
@@ -23,6 +24,7 @@ export class Keymap {
     // Keymapping
     static CreateInvoice_Key: string = "n";
     static SignOut_Key: string = "o";
+    static Toggle_Sidebar_Key: string = "h";
 
     static Nav_Dashboard_Key: string = "d";
     static Nav_Invoices_Key: string = "i";
@@ -41,6 +43,14 @@ export class Keymap {
     }
     static SignOut(func: any): any {
         const key:string = this.SignOut_Key;
+        if (func == null)
+            return this.ControlKeyText + " + " + key;
+        const map = new KeymapObject()
+        map[this.ControlKey + " + " + key] = func;
+        return map;
+    }
+    static ToggleSidebar(func: any): any {
+        const key:string = this.Toggle_Sidebar_Key;
         if (func == null)
             return this.ControlKeyText + " + " + key;
         const map = new KeymapObject()

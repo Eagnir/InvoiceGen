@@ -100,6 +100,44 @@ func confirmDBExist() {
 		}
 		return nil
 	})
+	/*
+		var taxGroups []entity.TaxGroup = []entity.TaxGroup{}
+		db.Context.Debug().Preload("Taxes").Find(&taxGroups)
+		fmt.Println("List of TaxGroups")
+		for _, tg := range taxGroups {
+			for _, tx := range tg.Taxes {
+				fmt.Printf("\t Group: %s \t Tax: %s\t Tax: %f\n", tg.Name, tx.ShortName, tx.Percentage)
+			}
+		}
+
+		var currencies []entity.Currency = []entity.Currency{}
+		db.Context.Debug().Preload("Companies").Preload("Clients").Find(&currencies)
+		fmt.Println("List of Currencies - Companies")
+		for _, tg := range currencies {
+			for _, tx := range tg.Companies {
+				fmt.Printf("\t Company Name: %s \t Currency: %s\n", tx.Name, tg.ShortName)
+			}
+		}
+		fmt.Println("List of Currencies - Clients")
+		for _, tg := range currencies {
+			for _, tx := range tg.Clients {
+				fmt.Printf("\t Client Name: %s \t Currency: %s\n", tx.Name, tg.ShortName)
+			}
+		}
+
+		var companies []entity.Company = []entity.Company{}
+		db.Context.Preload("DefaultCurrency").Find(&companies)
+		fmt.Println("List of Companies")
+		for _, tg := range companies {
+			fmt.Printf("\t Company Name: %s \t Currency: %s\n", tg.Name, tg.DefaultCurrency.ShortName)
+		}
+
+		var clients []entity.Client = []entity.Client{}
+		db.Context.Preload("DefaultCurrency").Find(&clients)
+		fmt.Println("List of Clients")
+		for _, tg := range clients {
+			fmt.Printf("\t Company Name: %s \t Currency: %s\n", tg.Name, tg.DefaultCurrency.ShortName)
+		} */
 }
 
 func main() {

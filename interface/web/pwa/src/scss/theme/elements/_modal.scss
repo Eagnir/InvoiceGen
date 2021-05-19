@@ -1,0 +1,5 @@
+@use '../../default/extendables'as *;
+
+.modal {
+    color: override-contrast('light');
+}
