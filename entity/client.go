@@ -14,11 +14,11 @@ type Client struct {
 	CompanyId         int `gorm:"not null"`
 	DefaultCurrencyId int `gorm:"not null"`
 
-	Company  *Company
+	Company         *Company
+	DefaultCurrency *Currency
+
 	Invoices []*Invoice
 	Tags     []*Tag `gorm:"many2many:client_tags;"`
-
-	DefaultCurrency *Currency
 
 	DefaultStruct
 }

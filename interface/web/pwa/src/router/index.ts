@@ -4,9 +4,18 @@ import Dashboard from "../views/Dashboard.vue";
 import Error from "../views/Error.vue";
 import Login from "../views/Login.vue";
 import About from "../views/About.vue";
-import Invoices from "../views/Invoices.vue";
-import Clients from "../views/Clients.vue";
-import Reports from "../views/Reports.vue";
+
+import InvoiceDefault from "../views/Invoices/Default.vue";
+import InvoiceList from "../views/Invoices/List.vue";
+import InvoiceDetails from "../views/Invoices/Details.vue";
+
+import ReportDefault from "../views/Reports/Default.vue";
+import ReportList from "../views/Reports/List.vue";
+
+import ClientDefault from "../views/Clients/Default.vue";
+import ClientList from "../views/Clients/List.vue";
+import ClientDetails from "../views/Clients/Details.vue";
+
 import Settings from "../views/Settings.vue";
 
 import Auth from "../Auth.vue";
@@ -36,7 +45,7 @@ const routes: Array<RouteConfig> = [
     component: Auth,
     children: [
       {
-        path: "/",
+        path: "",
         redirect: { name: 'Dashboard' },
       },
       {
@@ -51,21 +60,67 @@ const routes: Array<RouteConfig> = [
       },
 
       {
-        path: "invoices",
-        name: "Invoices",
-        component: Invoices,
+        path: "clients",
+        component: ClientDefault,
+        children: [
+          {
+            path: "",
+            name:"Clients",
+            redirect: { name: 'ClientList' },
+          },
+          {
+            path: "list",
+            name: "ClientList",
+            component: ClientList,
+          },
+          {
+            path: ":clientId/details/",
+            name: "ClientDetails",
+            props: true,
+            component: ClientDetails,
+          }
+        ]
       },
 
       {
-        path: "clients",
-        name: "Clients",
-        component: Clients,
+        path: "invoices",
+        component: InvoiceDefault,
+        children: [
+          {
+            path: "",
+            name:"Invoices",
+            redirect: { name: 'InvoiceList' },
+          },
+          {
+            path: "list",
+            name: "InvoiceList",
+            component: InvoiceList,
+          },
+          {
+            path: ":invoiceId/details",
+            name: "InvoiceDetails",
+            props: true,
+            component: InvoiceDetails,
+          }
+        ]
       },
+
 
       {
         path: "reports",
-        name: "Reports",
-        component: Reports,
+        component: ReportDefault,
+        children: [
+          {
+            path: "",
+            name:"Reports",
+            redirect: { name: 'ReportList' },
+          },
+          {
+            path: "list",
+            name: "ReportList",
+            component: ReportList,
+          },
+        ]
       },
 
       {

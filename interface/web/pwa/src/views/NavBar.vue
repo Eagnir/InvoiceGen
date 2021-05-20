@@ -5,7 +5,7 @@
       :class="{ iconsOnlyBar: sidebarIconsOnly }"
     >
       <router-link
-        to="/auth/"
+        :to="{ name: 'Dashboard' }"
         exact
         class="logo d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none"
       >
@@ -31,7 +31,7 @@
         </li>
         <li>
           <router-link
-            to="/auth/dashboard"
+            :to="{ name: 'Dashboard' }"
             exact
             class="nav-link"
             data-bs-toggle="tooltip"
@@ -46,19 +46,7 @@
         </li>
         <li>
           <router-link
-            to="/auth/invoices"
-            class="nav-link"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            :title="this.$ig.keymap.NavInvoices()"
-            v-hotkey.stop="this.$ig.keymap.NavInvoices(this.NavTo('Invoices'))"
-            ><i class="bi-receipt-cutoff me-3"></i>
-            <span><keymap>I</keymap>nvoices</span></router-link
-          >
-        </li>
-        <li>
-          <router-link
-            to="/auth/clients"
+            :to="{ name: 'Clients'}"
             class="nav-link"
             data-bs-toggle="tooltip"
             data-bs-placement="right"
@@ -70,7 +58,19 @@
         </li>
         <li>
           <router-link
-            to="/auth/reports"
+            :to="{ name: 'Invoices'}"
+            class="nav-link"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            :title="this.$ig.keymap.NavInvoices()"
+            v-hotkey.stop="this.$ig.keymap.NavInvoices(this.NavTo('Invoices'))"
+            ><i class="bi-receipt-cutoff me-3"></i>
+            <span><keymap>I</keymap>nvoices</span></router-link
+          >
+        </li>
+        <li>
+          <router-link
+            :to="{ name: 'Reports'}"
             class="nav-link"
             data-bs-toggle="tooltip"
             data-bs-placement="right"
@@ -122,7 +122,7 @@
         >
           <li>
             <router-link
-              to="/auth/about"
+              :to="{ name: 'AuthAbout' }"
               class="nav-link"
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -132,7 +132,7 @@
           </li>
           <li>
             <router-link
-              to="/auth/settings"
+              :to="{ name: 'Settings' }"
               class="nav-link"
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -168,16 +168,16 @@
       </a>
     </div>
     <div class="bottom-bar">
-      <router-link to="/auth/" exact class="nav-link"
+      <router-link :to="{ name: 'Dashboard' }" class="nav-link"
         ><i class="bi-clipboard-data fs-2"></i>
       </router-link>
-      <router-link to="/auth/invoices" class="nav-link"
-        ><i class="bi-receipt-cutoff fs-2"></i>
-      </router-link>
-      <router-link to="/auth/clients" class="nav-link"
+      <router-link :to="{ name: 'Clients' }" class="nav-link"
         ><i class="bi-people fs-2"></i>
       </router-link>
-      <router-link to="/auth/reports" class="nav-link"
+      <router-link :to="{ name: 'Invoices' }" class="nav-link"
+        ><i class="bi-receipt-cutoff fs-2"></i>
+      </router-link>
+      <router-link :to="{ name: 'Reports' }" class="nav-link"
         ><i class="bi-file-earmark-text fs-2"></i>
       </router-link>
 
@@ -197,7 +197,7 @@
         >
           <li>
             <router-link
-              to="/auth/about"
+              :to="{ name: 'AuthAbout' }"
               class="nav-link"
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -207,7 +207,7 @@
           </li>
           <li>
             <router-link
-              to="/auth/settings"
+              :to="{ name: 'Settings' }"
               class="nav-link"
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -305,14 +305,20 @@ export default class Home extends Vue {
       console.log(this.$router.currentRoute.name);
       if (this.$router.currentRoute.name != routeName) {
         this.$router.push({ name: routeName });
-      } else this.$toast.info("You are already in " + routeName);
+      } else this.$swal.toast.info("You are already in " + routeName);
     };
     if (exec) nfn();
     return nfn;
   }
 
   confirmSignOut() {
-    this.signOutConfirmationPopup.show();
+    this.$swal.confirm("Do you want to sign out?",{
+      confirmButtonText: "Yes, sign out"
+    })
+      .then((res) => {
+        if(res.isConfirmed)
+          this.signout();
+      });
   }
 
   signout() {

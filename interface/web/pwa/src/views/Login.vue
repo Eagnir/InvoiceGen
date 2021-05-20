@@ -70,20 +70,27 @@ import { APIResponseStatus } from "@/entity/response";
 @Component({
   components: {},
 })
-export default class Home extends Vue {
+export default class Login extends Vue {
   email: string = "";
   passw: string = "";
 
   public mounted() {
     this.AutoLogin();
+
+    //this.$swal.toast.fire("Hello Default");
+    //this.$swal.toast.info("Hello Info");
+    //this.$swal.toast.warning("Hello Warning");
+    //this.$swal.toast.error("Hello Error");
+    //this.$swal.toast.success("Hello Success");
+
   }
 
   private AutoLogin() {
     var usr = igApp.Instance.User;
     if (usr != null) {
       this.$ig.api.heartbeat().then((resp) => {
-        this.$toast.info("Your session has been continued")
-        this.$router.push({ name: "Home" });
+        this.$swal.toast.info("Your session has been continued")
+        this.$router.push({ name: "Dashboard" });
       });
     }
   }

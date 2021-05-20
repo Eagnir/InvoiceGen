@@ -3,6 +3,8 @@ import { Server } from "@/IG/server";
 import APIResponse, { APIResponseStatus } from "@/entity/response";
 import { App as igApp, UserCredential } from "./app";
 import Vue from 'vue'
+import { SweetAlertIcon } from "sweetalert2";
+import mainVueApp from "@/main";
 
 class APIUrl {
   public static Auth_Credential: string = Server.Instance.APIBaseURL + "auth/credential";
@@ -48,8 +50,10 @@ export class API {
 
   private getAuthHeaders(): string[][] {
     const authHeaders: any = Object.assign({}, this.getHeaders());
-    authHeaders["token"] = igApp.Instance.User.token;
-    authHeaders["email"] = igApp.Instance.User.email;
+    if(igApp.Instance.User != null){
+      authHeaders["token"] = igApp.Instance.User.token;
+      authHeaders["email"] = igApp.Instance.User.email;
+    }
     return authHeaders;
   }
 
@@ -65,7 +69,7 @@ export class API {
 
       if (option.ShowToast) {
         let showToast = true;
-        let toastType = "";
+        let toastType:SweetAlertIcon = "info";
         let toastDuration = 3000;
         switch (resp.Status) {
           case APIResponseStatus.StatusFailure:
@@ -90,12 +94,13 @@ export class API {
             toastType = "info";
         }
         if (showToast) {
-          if (option.ClearPreviousToasts)
-            Vue.$toast.clear();
-          const instance = Vue.$toast.open({
-            type: toastType,
-            message: resp.Message,
-            duration: toastDuration
+
+          
+          //if (option.ClearPreviousToasts)
+            //Vue.prototype.$swal.toast.fire()
+            //Vue.$toast.clear();
+          const instance = mainVueApp.$swal.toast.fire(resp.Message, {
+            icon: toastType,
           });
         }
       }
@@ -109,10 +114,8 @@ export class API {
       else
         return resp;
     }).catch(error => {
-      const instance = Vue.$toast.open({
-        type: "error",
-        message: "Fatal Error occured; '" + error + "'",
-        duration: 0
+      const instance = Vue.$swal.toast.error("Fatal Error occured; '" + error + "'", {
+        timer:8000
       });
       console.log(error);
     }) as Promise<APIResponse<T>>;
@@ -139,7 +142,7 @@ export class API {
   }
 
   public heartbeat(option?: APIOptions): Promise<APIResponse<UserCredential>> {
-    //if (igApp.Instance.User == null) return Promise.reject();
+    if (igApp.Instance.User == null) return Promise.reject();
     option = Object.assign({}, { ShowToast: false }, option);
     return this.postCall<UserCredential>(APIUrl.Auth_Heartbeat, null, option)
       .then(resp => {

@@ -26,17 +26,11 @@ export default class Auth extends Vue {
       })
       .then((resp) => {
         if (resp.Status != APIResponseStatus.StatusSuccess) {
-          this.$toast.error("Your session has expired");
+          this.$swal.toast.error("Your session has expired");
           this.$router.push({ name: "Login" });
         }
       });
-  }
 
-  mounted() {
-    this.$ig.app.initBS();
-    this.$router.afterEach((to, from) => {
-      this.$ig.app.initBS();
-    });
 
     this.$router.beforeEach((to, from, next) => {
       if (to.name == "Login") {
@@ -44,18 +38,31 @@ export default class Auth extends Vue {
         return;
       }
 
+        console.log(to);
       this.$ig.api
         .heartbeat({
           RejectOnFailure: false,
         })
         .then((resp) => {
           if (resp.Status != APIResponseStatus.StatusSuccess) {
-            this.$toast.error("Your session has expired");
+            this.$swal.toast.error("Your session has expired");
             next({ name: "Login" });
           }
         });
       next();
     });
+
+
+    this.$router.afterEach((to, from) => {
+      
+        console.log("Reached");
+      this.$ig.app.initBS();
+    });
+  }
+
+  mounted() {
+    this.$ig.app.initBS();
+
   }
 }
 </script>

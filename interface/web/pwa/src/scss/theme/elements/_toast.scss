@@ -1,0 +1,58 @@
+@use '../../default/extendables'as *;
+
+.swal2-popup.swal2-toast {
+    background: contrast('hint') !important;
+}
+
+
+.swal2-container {
+    .colored-toast {
+        padding: 0.5em 0.8em 0.5em 0.8em!important;
+        background: $accent-sec-color !important;
+
+        .swal2-html-container {
+            color: override-contrast($theme-mode-opp) !important;
+        }
+
+        .swal2-icon-content {
+            font-size:1.4em!important;
+        }
+    }
+
+
+    .colored-toast.swal2-icon-success {
+        background-color: $success !important;
+    }
+
+    .colored-toast.swal2-icon-error {
+        background-color: $danger !important;
+    }
+
+    .colored-toast.swal2-icon-warning {
+        
+        .swal2-html-container {
+            color: contrast() !important;
+        }
+        background-color: $warning !important;
+    }
+
+    .colored-toast.swal2-icon-info {
+        background-color: $info !important;
+    }
+
+    /* .colored-toast.swal2-icon-question {
+        background-color: #87adbd !important;
+    } */
+
+    .colored-toast .swal2-title {
+        color: white;
+    }
+
+    .colored-toast .swal2-close {
+        color: white;
+    }
+
+    .colored-toast .swal2-content {
+        color: white;
+    }
+}

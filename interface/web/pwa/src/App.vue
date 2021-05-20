@@ -18,7 +18,7 @@ export default class App extends Vue {
       })
       .then((resp) => {
         if (resp.Status != APIResponseStatus.StatusSuccess) {
-          this.$toast.error("Your session has expired");
+          this.$swal.toast.error("Your session has expired");
           this.$router.push({ name: "Login" });
         }
       });
@@ -37,7 +37,7 @@ export default class App extends Vue {
         })
         .then((resp) => {
           if (resp.Status != APIResponseStatus.StatusSuccess) {
-            this.$toast.error("Your session has expired");
+            this.$swal.toast.error("Your session has expired");
             next({ name: "Login" });
           }
         });
