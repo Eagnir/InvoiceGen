@@ -74,7 +74,7 @@ const routes: Array<RouteConfig> = [
             component: ClientList,
           },
           {
-            path: ":clientId/details/",
+            path: ":clientId/:clientName/details/",
             name: "ClientDetails",
             props: true,
             component: ClientDetails,
@@ -97,7 +97,7 @@ const routes: Array<RouteConfig> = [
             component: InvoiceList,
           },
           {
-            path: ":invoiceId/details",
+            path: ":invoiceNumber/details/",
             name: "InvoiceDetails",
             props: true,
             component: InvoiceDetails,

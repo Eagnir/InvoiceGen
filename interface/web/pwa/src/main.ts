@@ -15,21 +15,13 @@ import "bootstrap";
 import IGPlugin from "@/IG/igPlugin";
 import moment from "moment-timezone";
 import VueMoment from "vue-moment";
-import VueToast from 'vue-toast-notification';
-//import 'vue-toast-notification/dist/theme-default.css';
 import SwalPlugin from '@/libs/SwalPlugin';
 import VueHotkey from 'v-hotkey';
-
-//import 'vue-toast-notification/dist/theme-sugar.css';
 
 Vue.use(IGPlugin);
 Vue.use(VueMoment, {
   moment,
 })
-/* Vue.use(VueToast,{
-  // One of the options
-  position: 'top-right'
-}); */
 Vue.use(SwalPlugin);
 Vue.use(VueHotkey)
 

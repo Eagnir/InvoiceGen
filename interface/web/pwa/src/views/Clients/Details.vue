@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row align-items-center">
-      <div class="col">
+      <div class="col-12 col-md text-md-start text-center">
         <h1 class="m-0">{{ clientName }}</h1>
       </div>
-      <div class="col-12 col-md-5 text-end">
+      <div class="col-12 col-md-5 text-md-end d-none d-md-block">
         <button type="button" class="btn btn-default mb-3 me-4">Reset</button>
         <button type="button" class="btn btn-success mb-3">Save Client</button>
       </div>
@@ -17,32 +17,109 @@
         </li>
         <li class="breadcrumb-item active">Detail</li>
         <li class="breadcrumb-item active" aria-current="page">
-          #{{ clientId }}
+          {{ clientName }} #{{ clientId }}
         </li>
       </ol>
     </nav>
+
     <div class="row">
-      <router-link
-        :to="{ name: 'ClientDetails', params: { clientId: 1 } }"
-        custom
-        v-slot="{ navigate }"
-      >
-        <div class="col col-md-6 col-xl-4 c-pointer" @click="navigate">
-          <div class="card mb-3 d-flex">
-            <div class="d-flex">
-              <img src="https://via.placeholder.com/120" />
-              <div class="card-body">
-                <h5 class="card-title">Client Name</h5>
-                <p class="card-text mb-1">FY: INR 10,20,000/-</p>
-                <p class="card-text m-0">
-                  <small class="text-muted">3 months ago</small>
-                </p>
-              </div>
-            </div>
-          </div>
+      <div class="col-md mb-3 mb-md-0">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="companyName" placeholder="Abc Pvt. Ltd.">
+          <label for="companyName">Company Name</label>
         </div>
-      </router-link>
+      </div>
+      <div class="col-md mb-3 mb-md-0">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="gstNumber" placeholder="12AAAAA0000A1Z5">
+          <label for="gstNumber">GST Number</label>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-floating">
+          <select class="form-select" id="defaultCurrency">
+            <option selected>Select Currency</option>
+            <option value="1">INR</option>
+            <option value="2">USD</option>
+            <option value="3">CAD</option>
+          </select>
+          <label for="defaultCurrency">Default Currency</label>
+        </div>
+      </div>
     </div>
+
+    <div class="row mt-3">
+      <div class="col">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="address" placeholder="Office #, Building name, street, city, zip, state, country.">
+          <label for="address">Postal Address</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md mb-3 mb-md-0">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="email" placeholder="name@domain.com">
+          <label for="email">Email</label>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="contactNumber" placeholder="1234567890">
+          <label for="contactNumber">Contact Number</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12 text-center d-md-none">
+        <button type="button" class="btn btn-default mb-3 me-4">Reset</button>
+        <button type="button" class="btn btn-success mb-3">Save Client</button>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col">
+        <h5 class="d-flex">
+          <span class="flex-grow-1">Client Invoices</span>
+          <span>
+            <span title="Pending invoices" class="badge bg-warning">3</span>&nbsp;
+            <span title="Paid invoices" class="badge bg-success">4</span>&nbsp;
+            <span title="Total invoices" class="badge bg-secondary">7</span>
+          </span>
+          </h5>
+        <hr>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Date</th>
+              <th class="d-none d-md-table-cell" scope="col">Particulars</th>
+              <th class="d-none d-md-table-cell" scope="col">Gross Amount</th>
+              <th class="text-end" scope="col">Tax</th>
+              <th class="text-end" scope="col">Total (INR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>21 May 2021</td>
+              <td class="d-none d-md-table-cell">2 items</td>
+              <td class="d-none d-md-table-cell">20,000</td>
+              <td class="text-end">12,000</td>
+              <td class="text-end">32,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </template>
 <script lang="ts">
@@ -61,7 +138,8 @@ Component.registerHooks([
 export default class ClientDetails extends Vue {
   @Prop({ default: "0" })
   clientId: number;
-  clientName: string = "Loading...";
+  @Prop({ default: "Loading..." })
+  clientName: string;
 
   beforeRouteLeave(to: any, from: any, next: any) {
     this.$swal.confirm("Do you want to discard changes?")

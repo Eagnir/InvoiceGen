@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewClient_Success(t *testing.T) {
-	client, ex := entity.NewClient("Ethen", "Mumbai Maharashtra India", "ethen@gmail.com", "9833588467", "asdfgh324")
+	client, ex := entity.NewClient("Ethen", "Mumbai Maharashtra India", "ethen@gmail.com", "9839283939", "asdfgh324")
 	if ex == nil {
 		if client.Name != "Ethen" {
 			t.Error("Name property not set properly")
@@ -17,7 +17,7 @@ func TestNewClient_Success(t *testing.T) {
 		if client.Email != "ethen@gmail.com" {
 			t.Error("Email property not set properly")
 		}
-		if client.ContactNumber != "9833588467" {
+		if client.ContactNumber != "9839283939" {
 			t.Error("Contact Number property not set properly")
 		}
 		if client.GSTNumber != "asdfgh324" {
