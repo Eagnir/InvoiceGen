@@ -41,21 +41,21 @@ type InvoiceStatus int
 
 const (
 	InvoiceCreated = iota
-	InvoiceSent
 	InvoicePending
 	InvoicePaid
+	InvoiceCancelled
 )
 
 func (status InvoiceStatus) String() string {
 	switch status {
 	case InvoiceCreated:
 		return "Created"
-	case InvoiceSent:
-		return "Sent"
 	case InvoicePending:
 		return "Pending"
 	case InvoicePaid:
 		return "Paid"
+	case InvoiceCancelled:
+		return "Cancelled"
 	}
 	return ""
 }
@@ -68,10 +68,10 @@ func (obj *Invoice) Validate() error {
 	return nil
 }
 
-func NewInvoice(status InvoiceStatus, adminUserId int) (*Invoice, error) {
+func NewInvoice(status InvoiceStatus, adminUser *AdminUser) (*Invoice, error) {
 	u := &Invoice{
-		AdminUserId: adminUserId,
-		Status:      status,
+		AdminUser: adminUser,
+		Status:    status,
 	}
 	u.AutoFillInvoiceNumber(0)
 	return u, nil
@@ -79,6 +79,70 @@ func NewInvoice(status InvoiceStatus, adminUserId int) (*Invoice, error) {
 
 func (invoice *Invoice) AutoFillInvoiceNumber(todaysInvoiceCount int) *Invoice {
 	invoice.InvoiceNumber = time.Now().Format("020106") + strconv.Itoa(todaysInvoiceCount+1)
+	return invoice
+}
+
+func (invoice *Invoice) SetInvoiceNumber(invoiceNumber string) *Invoice {
+	invoice.InvoiceNumber = invoiceNumber
+	return invoice
+}
+
+func (invoice *Invoice) SetDetails(company *Company, client *Client, currency *Currency, taxGroup *TaxGroup) *Invoice {
+	invoice.SetCompany(company).SetClient(client).SetCurrency(currency).SetTaxGroup(taxGroup)
+	return invoice
+}
+
+func (invoice *Invoice) SwitchAdminUser(adminUser *AdminUser) *Invoice {
+	invoice.AdminUser = adminUser
+	return invoice
+}
+
+func (invoice *Invoice) SetClient(client *Client) *Invoice {
+	invoice.Client = client
+	return invoice
+}
+
+func (invoice *Invoice) SetCompany(company *Company) *Invoice {
+	invoice.Company = company
+	return invoice
+}
+
+func (invoice *Invoice) SetCurrency(currency *Currency) *Invoice {
+	invoice.Currency = currency
+	return invoice
+}
+
+func (invoice *Invoice) SetTaxGroup(taxGroup *TaxGroup) *Invoice {
+	invoice.TaxGroup = taxGroup
+	invoice.CalcAmounts()
+	return invoice
+}
+
+func (invoice *Invoice) SetInvoiceItems(invoiceItems []*InvoiceItem) *Invoice {
+	invoice.InvoiceItems = invoiceItems
+	invoice.CalcAmounts()
+	return invoice
+}
+
+func (invoice *Invoice) AddInvoiceItem(invoiceItem *InvoiceItem) *Invoice {
+	invoice.InvoiceItems = append(invoice.InvoiceItems, invoiceItem)
+	invoice.CalcAmounts()
+	return invoice
+}
+
+func (invoice *Invoice) CalcAmounts() *Invoice {
+	invoice.TaxableAmount = 0.0
+	for _, item := range invoice.InvoiceItems {
+		invoice.TaxableAmount += item.TaxableAmount
+	}
+	invoice.TaxPercentage = 0.0
+	if invoice.TaxGroup != nil {
+		for _, item := range invoice.TaxGroup.Taxes {
+			invoice.TaxPercentage += item.Percentage
+		}
+	}
+	invoice.TaxPayable = invoice.TaxableAmount * invoice.TaxPercentage / 100
+	invoice.InvoiceAmount = invoice.TaxableAmount + invoice.TaxPayable
 	return invoice
 }
 

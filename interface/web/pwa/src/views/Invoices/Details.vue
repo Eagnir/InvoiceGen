@@ -1,12 +1,40 @@
 <template>
-  <div>
+  <div class="mb-5 mb-md-0 pb-4 pb-md-0">
+    <nav class="d-md-none navbar fixed-bottom navbar-light bg-light sub-nav border border-dark border-start-0 border-end-0 text-center justify-content-center align-items-center px-3 flex-nowrap">
+      <button type="button" class="btn flex-fill btn-primary"><i class="bi bi-arrow-repeat"></i> Reset</button>
+      <button type="button" class="btn flex-fill btn-success mx-3"><i class="bi bi-check2-square"></i> Save</button>
+      <div class="btn-group dropup flex-fill">
+        <button type="button" class="btn btn-secondary dropdown-toggle remove-toggle-icon" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-list"></i> Actions
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><button class="dropdown-item"><i class="bi bi-card-checklist me-2"></i> Change Status</button></li>
+          <li><button class="dropdown-item"><i class="bi bi-download me-2"></i> Download</button></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><button class="dropdown-item text-danger"><i class="bi bi-trash me-2"></i> Delete</button></li>
+        </ul>
+      </div>
+    </nav>
     <div class="row align-items-center">
       <div class="col-12 col-md text-md-start text-center">
         <h1 class="m-0">Invoice Details <span><span class="d-none d-md-inline">-</span><br class="d-inline d-md-none"></span> #{{ invoiceNumber }}</h1>
       </div>
       <div class="col-12 col-md-5 text-md-end d-none d-md-block">
-        <button type="button" class="btn btn-default mb-3 me-4">Reset</button>
-        <button type="button" class="btn btn-success mb-3">Save Invoice</button>
+        <nav class="navbar text-center justify-content-center align-items-center flex-nowrap">
+          <button type="button" class="btn flex-fill btn-primary"><i class="bi bi-arrow-repeat"></i> Reset</button>
+          <button type="button" class="btn flex-fill btn-success mx-3"><i class="bi bi-check2-square"></i> Save</button>
+          <div class="btn-group dropdown flex-fill">
+            <button type="button" class="btn btn-secondary dropdown-toggle remove-toggle-icon" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-list"></i> Actions
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><button class="dropdown-item"><i class="bi bi-card-checklist me-2"></i> Change Status</button></li>
+              <li><button class="dropdown-item"><i class="bi bi-download me-2"></i> Download</button></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item text-danger"><i class="bi bi-trash me-2"></i> Delete</button></li>
+            </ul>
+          </div>
+        </nav>
       </div>
     </div>
     <hr />
@@ -17,7 +45,7 @@
         </li>
         <li class="breadcrumb-item active">Detail</li>
         <li class="breadcrumb-item active" aria-current="page">
-          Invoice #{{ invoiceNumber }}
+          #{{ invoiceNumber }}
         </li>
       </ol>
     </nav>
@@ -94,7 +122,7 @@
       <div class="col-12 col-md-3 mt-md-0">
           <div class="form-floating input-group mb-3">
             <span class="input-group-text">USD</span>
-            <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+            <input type="text" class="form-control" v-maska="'#*.##'" v-model.trim="grossAmount" aria-label="Dollar amount (with dot and two decimal places)">
             <label class="ps-5 ms-4" for="amount">Gross Amount</label>
             <button class="btn btn-sm btn-success" type="button">Add Item</button>
           </div>
@@ -115,48 +143,43 @@
           </thead>
           <tbody>
             <tr>
+              <td class="text-center" colspan="3">Please add invoice particulars</td>
+            </tr>
+            <tr>
               <th scope="row">1</th>
               <td>Software Development for WPC</td>
-              <td class="text-end align-middle">32,000<small>.00</small></td>
+              <td class="text-end align-middle" v-html="this.$options.filters.igamount(32000.86)"></td>
             </tr>
             <tr>
               <th scope="row">2</th>
               <td>IT Consultancy for 3 months</td>
-              <td class="text-end align-middle">32,000<small>.00</small></td>
+              <td class="text-end align-middle" v-html="this.$options.filters.igamount(95200.08)"></td>
             </tr>
             <tr>
               <th scope="row">3</th>
               <td>1 Year software maintenance and development contract (1 Jan 2021 to 31 Dec 2021)</td>
-              <td class="text-end align-middle">32,000<small>.32</small></td>
+              <td class="text-end align-middle" v-html="this.$options.filters.igamount(16520.12)"></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
               <td colspan="2" class="border-0 border-end pe-4 text-end fw-bold text-success border-end border-success">Gross Amount</td>
-              <td class="text-end align-middle fw-bold border border-success text-success">12,000<small>.56</small></td>
+              <td class="text-end align-middle fw-bold border border-success text-success" v-html="this.$options.filters.igamount(120520)"></td>
             </tr>
             <tr>
               <td colspan="2" class="border-0 border-end pe-4 text-end">+ Tax</td>
-              <td class="text-end align-middle">12,000<small>.56</small></td>
+              <td class="text-end align-middle" v-html="this.$options.filters.igamount(12000.56)"></td>
             </tr>
             <tr>
               <td colspan="2" class="border-0 border-end pe-4 text-end">+ Tax</td>
-              <td class="text-end align-middle border-bottom border-success">12,000<small>.02</small></td>
+              <td class="text-end align-middle border-bottom border-success" v-html="this.$options.filters.igamount(12000)"></td>
             </tr>
             <tr>
               <td colspan="2" class="border-0 border-end pe-4 text-end fw-bold text-success border-end border-success">Invoice Amount</td>
-              <td class="text-end align-middle fw-bold border border-success text-success">1,23,000<small>.00</small></td>
+              <td class="text-end align-middle fw-bold border border-success text-success" v-html="this.$options.filters.igamount(123000,'INR')"></td>
             </tr>
           </tfoot>
         </table>
-      </div>
-    </div>
-
-
-    <div class="row mt-4">
-      <div class="col-12 text-center d-md-none">
-        <button type="button" class="btn btn-default mb-3 me-4">Reset</button>
-        <button type="button" class="btn btn-success mb-3">Save Invoice</button>
       </div>
     </div>
 
@@ -182,6 +205,8 @@ export default class InvoiceDetails extends Vue {
 
   @Prop({ default: "Loading..." })
   invoiceNumber: string;
+
+  grossAmount:string = "";
 
   
   beforeRouteLeave(to: any, from: any, next: any) {

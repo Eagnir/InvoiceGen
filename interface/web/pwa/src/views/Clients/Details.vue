@@ -1,12 +1,38 @@
 <template>
-  <div>
+  <div class="mb-5 mb-md-0 pb-4 pb-md-0">
+    <nav class="d-md-none navbar fixed-bottom navbar-light bg-light sub-nav border border-dark border-start-0 border-end-0 text-center justify-content-center align-items-center px-3 flex-nowrap">
+      <button type="button" class="btn flex-fill btn-primary"><i class="bi bi-arrow-repeat"></i> Reset</button>
+      <button type="button" class="btn flex-fill btn-success mx-3"><i class="bi bi-check2-square"></i> Save</button>
+      <div class="btn-group dropup flex-fill">
+        <button type="button" class="btn btn-secondary dropdown-toggle remove-toggle-icon" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-list"></i> Actions
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><button class="dropdown-item text-danger"><i class="bi bi-trash me-2"></i> Delete</button></li>
+        </ul>
+      </div>
+    </nav>
+
     <div class="row align-items-center">
       <div class="col-12 col-md text-md-start text-center">
         <h1 class="m-0">{{ clientName }}</h1>
       </div>
       <div class="col-12 col-md-5 text-md-end d-none d-md-block">
-        <button type="button" class="btn btn-default mb-3 me-4">Reset</button>
-        <button type="button" class="btn btn-success mb-3">Save Client</button>
+        <nav class="navbar text-center justify-content-center align-items-center flex-nowrap">
+          <button type="button" class="btn flex-fill btn-primary"><i class="bi bi-arrow-repeat"></i> Reset</button>
+          <button type="button" class="btn flex-fill btn-success ms-3"><i class="bi bi-check2-square"></i> Save</button>
+          <div class="btn-group dropdown flex-fill invisible order-first">
+            <button type="button" class="btn btn-secondary dropdown-toggle remove-toggle-icon" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-list"></i> Actions
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><button class="dropdown-item"><i class="bi bi-card-checklist me-2"></i> Change Status</button></li>
+              <li><button class="dropdown-item"><i class="bi bi-download me-2"></i> Download</button></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item text-danger"><i class="bi bi-trash me-2"></i> Delete</button></li>
+            </ul>
+          </div>
+        </nav>
       </div>
     </div>
     <hr />
@@ -73,13 +99,6 @@
     </div>
 
     <div class="row mt-4">
-      <div class="col-12 text-center d-md-none">
-        <button type="button" class="btn btn-default mb-3 me-4">Reset</button>
-        <button type="button" class="btn btn-success mb-3">Save Client</button>
-      </div>
-    </div>
-
-    <div class="row mt-4">
       <div class="col">
         <h5 class="d-flex">
           <span class="flex-grow-1">Client Invoices</span>
@@ -107,6 +126,9 @@
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td class="text-center" colspan="6">No invoices found</td>
+            </tr>
             <tr>
               <th scope="row">1</th>
               <td>21 May 2021</td>

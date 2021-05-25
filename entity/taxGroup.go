@@ -40,7 +40,7 @@ func NewTaxGroup(name, shortName string) (*TaxGroup, error) {
 
 func (taxGroup *TaxGroup) AddTax(tax *Tax) (*TaxGroup, error) {
 	if tax != nil {
-		taxGroup.Taxes = append(tax.TaxGroup.Taxes, tax)
+		taxGroup.Taxes = append(taxGroup.Taxes, tax)
 		return taxGroup, nil
 	}
 	return nil, exception.TaxGroup_RequiredObject_Tax

@@ -9,7 +9,8 @@ type Client struct {
 	Address       string `gorm:"not null;"`
 	Email         string `gorm:"default:null"`
 	ContactNumber string `gorm:"not null;"`
-	GSTNumber     string `gorm:"unique"`
+	GSTNumber     string `gorm:"default:null;unique"`
+	Country       string `gorm:"not null;"`
 
 	CompanyId         int `gorm:"not null"`
 	DefaultCurrencyId int `gorm:"not null"`
@@ -43,7 +44,7 @@ func (obj *Client) Validate() error {
 	return nil
 }
 
-func NewClient(name, address, email, contactNumber, gstNumber string, currency *Currency, company *Company) (*Client, error) {
+func NewClient(name, address, email, contactNumber, country string, gstNumber string, currency *Currency, company *Company) (*Client, error) {
 	if name == "" {
 		return nil, exception.Client_RequiredField_Name
 	}
@@ -52,6 +53,9 @@ func NewClient(name, address, email, contactNumber, gstNumber string, currency *
 	}
 	if contactNumber == "" {
 		return nil, exception.Client_RequiredField_ContactNumber
+	}
+	if country == "" {
+		return nil, exception.Client_RequiredField_Country
 	}
 	if currency == nil {
 		return nil, exception.Client_RequiredField_Currency
@@ -66,6 +70,7 @@ func NewClient(name, address, email, contactNumber, gstNumber string, currency *
 		Email:           email,
 		ContactNumber:   contactNumber,
 		GSTNumber:       gstNumber,
+		Country:         country,
 		Company:         company,
 		DefaultCurrency: currency,
 	}

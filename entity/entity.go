@@ -119,6 +119,7 @@ func GenerateDefaultData() []interface{} {
 		"Office #20, Silver Star IT Park, Andheri West, Mumbai 400058, Maharashtra, India.",
 		"abc@gmail.com",
 		"+91 9877374937",
+		"India",
 		"27BFKPS1283Q2AA",
 		curINR,
 		company,
@@ -132,6 +133,7 @@ func GenerateDefaultData() []interface{} {
 		"Office #101, New York, New York 10012, United States of America.",
 		"jsons@gmail.com",
 		"+01 555 192-2028",
+		"USA",
 		"",
 		curUSD,
 		company,
@@ -140,28 +142,120 @@ func GenerateDefaultData() []interface{} {
 		res = append(res, client2)
 	}
 
+	client3, ex := NewClient(
+		"XYZ Incorporated",
+		"Office #500, Ottawa 10012, Canada.",
+		"xyz@domain.com",
+		"+01 551 192-2028",
+		"CAN",
+		"",
+		curUSD,
+		company,
+	)
+	if ex == nil {
+		res = append(res, client3)
+	}
+
 	igstGroup, ex := NewTaxGroup("Integrated GST", "IGST")
 	if ex == nil {
-		res = append(res, igstGroup)
-
-		igst, ex := NewTax("Integrated GST", "IGST", 18, igstGroup)
+		igst, ex := NewTax("Integrated GST", "IGST", 18.0)
 		if ex == nil {
-			res = append(res, igst)
+			igstGroup.AddTax(igst)
+			//res = append(res, igst)
 		}
+		res = append(res, igstGroup)
 	}
 
 	gstGroup, ex := NewTaxGroup("Goods & Service Tax", "GST")
 	if ex == nil {
-		res = append(res, gstGroup)
 
-		sgst, ex := NewTax("State GST", "SGST", 9, gstGroup)
+		sgst, ex := NewTax("State GST", "SGST", 9.0)
 		if ex == nil {
-			res = append(res, sgst)
+			gstGroup.AddTax(sgst)
+			//res = append(res, sgst)
 		}
-		cgst, ex := NewTax("Central GST", "CGST", 9, gstGroup)
+		cgst, ex := NewTax("Central GST", "CGST", 9.0)
 		if ex == nil {
-			res = append(res, cgst)
+			gstGroup.AddTax(cgst)
+			//res = append(res, cgst)
 		}
+
+		res = append(res, gstGroup)
+	}
+
+	invoice, ex := NewInvoice(InvoicePending, adminUser)
+	if ex == nil {
+		invItems := []*InvoiceItem{}
+		invoiceItem, ex := NewInvoiceItem("Development services", 1, 30250.12)
+		if ex == nil {
+			invItems = append(invItems, invoiceItem)
+		}
+		invoiceItem, ex = NewInvoiceItem("IT consultancy services", 2, 12500)
+		if ex == nil {
+			invItems = append(invItems, invoiceItem)
+		}
+
+		invoice.AutoFillInvoiceNumber(0)
+		invoice.SetDetails(company, client, curINR, gstGroup)
+		invoice.SetInvoiceItems(invItems)
+
+		res = append(res, invoice)
+	}
+
+	invoice2, ex := NewInvoice(InvoicePaid, adminUser)
+	if ex == nil {
+		invItems := []*InvoiceItem{}
+		invoiceItem, ex := NewInvoiceItem("Responsive website design", 1, 42500)
+		if ex == nil {
+			invoiceItem.SetClassificationCode("998314")
+			invoiceItem.SetNote("Website: www.domain.com")
+			invItems = append(invItems, invoiceItem)
+		}
+		invoiceItem, ex = NewInvoiceItem("Website performance review and optimization", 1, 22000)
+		if ex == nil {
+			invoiceItem.SetClassificationCode("998314")
+			invItems = append(invItems, invoiceItem)
+		}
+
+		invoice2.AutoFillInvoiceNumber(1)
+		invoice2.SetDetails(company, client, curUSD, nil)
+		invoice2.SetInvoiceItems(invItems)
+
+		res = append(res, invoice2)
+	}
+
+	invoice3, ex := NewInvoice(InvoiceCancelled, adminUser)
+	if ex == nil {
+		invItems := []*InvoiceItem{}
+		invoiceItem, ex := NewInvoiceItem("Hosting services", 3, 2500)
+		if ex == nil {
+			invoiceItem.SetClassificationCode("998315")
+			invoiceItem.SetNote("Websites: www.domain.com, abc.com, xyz.co.net")
+			invItems = append(invItems, invoiceItem)
+		}
+
+		invoice3.AutoFillInvoiceNumber(2)
+		invoice3.SetDetails(company, client, curINR, igstGroup)
+		invoice3.SetInvoiceItems(invItems)
+
+		res = append(res, invoice3)
+	}
+
+	invoice4, ex := NewInvoice(InvoicePaid, adminUser)
+	if ex == nil {
+		invItems := []*InvoiceItem{}
+		invoiceItem, ex := NewInvoiceItem("Hosting services", 3, 2500)
+		if ex == nil {
+			invoiceItem.SetClassificationCode("998315")
+			invoiceItem.SetNote("Websites: www.domain.com, abc.com, xyz.co.net")
+			invItems = append(invItems, invoiceItem)
+		}
+
+		invoice4.SetInvoiceNumber("1005211")
+		invoice4.SetDetails(company, client2, curUSD, igstGroup)
+		invoice4.SetInvoiceItems(invItems)
+
+		res = append(res, invoice4)
 	}
 
 	return res

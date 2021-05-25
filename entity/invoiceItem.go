@@ -30,17 +30,44 @@ func (obj *InvoiceItem) Validate() error {
 	return nil
 }
 
-func NewInvoiceItem(title string, rate float32) (*InvoiceItem, error) {
+func NewInvoiceItem(title string, quantity int, rate float32) (*InvoiceItem, error) {
 	if title == "" {
 		return nil, exception.InvoiceItem_RequiredField_Title
+	}
+	if quantity <= 0 {
+		return nil, exception.InvoiceItem_RequiredField_Quantity
 	}
 	if rate <= 0 {
 		return nil, exception.InvoiceItem_RequiredField_Rate
 	}
 
 	u := &InvoiceItem{
-		Title: title,
-		Rate:  rate,
+		Title:    title,
+		Rate:     rate,
+		Quantity: quantity,
 	}
+	u.CalcAmounts()
 	return u, nil
+}
+
+func (obj *InvoiceItem) CalcAmounts() {
+	obj.TaxableAmount = obj.Rate * float32(obj.Quantity)
+}
+
+func (obj *InvoiceItem) ChangeQuantity(quantity int) {
+	obj.Quantity = quantity
+	obj.CalcAmounts()
+}
+
+func (obj *InvoiceItem) ChangeRate(rate float32) {
+	obj.Rate = rate
+	obj.CalcAmounts()
+}
+
+func (obj *InvoiceItem) SetNote(note string) {
+	obj.Note = note
+}
+
+func (obj *InvoiceItem) SetClassificationCode(code string) {
+	obj.ClassificationCode = code
 }

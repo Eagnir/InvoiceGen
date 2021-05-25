@@ -21,6 +21,8 @@ type (
 	}
 )
 
+const authTagCode = "AU"
+
 func (handler *Auth) HookEndpoints(e *echo.Echo) {
 	if handler.isInitialized {
 		return
@@ -40,7 +42,7 @@ func (handler *Auth) HookEndpoints(e *echo.Echo) {
 
 func (handler *Auth) catchAll() echo.HandlerFunc {
 	eTag := apientity.APIErrorTag{
-		TagCode:   "AU",
+		TagCode:   authTagCode,
 		TagNumber: 0,
 	}
 	callerFuncName := setting.GetCallerFunctionName()
@@ -59,7 +61,7 @@ func (handler *Auth) catchAll() echo.HandlerFunc {
 
 func (handler *Auth) credential() echo.HandlerFunc {
 	eTag := apientity.APIErrorTag{
-		TagCode:   "AU",
+		TagCode:   authTagCode,
 		TagNumber: 1,
 	}
 	callerFuncName := setting.GetCallerFunctionName()
@@ -110,7 +112,7 @@ func (handler *Auth) credential() echo.HandlerFunc {
 
 func (handler *Auth) resetpassword() echo.HandlerFunc {
 	eTag := apientity.APIErrorTag{
-		TagCode:   "AU",
+		TagCode:   authTagCode,
 		TagNumber: 2,
 	}
 	callerFuncName := setting.GetCallerFunctionName()
@@ -149,7 +151,7 @@ func (handler *Auth) resetpassword() echo.HandlerFunc {
 
 func (handler *Auth) changepassword() echo.HandlerFunc {
 	eTag := apientity.APIErrorTag{
-		TagCode:   "AU",
+		TagCode:   authTagCode,
 		TagNumber: 3,
 	}
 	callerFuncName := setting.GetCallerFunctionName()
@@ -197,7 +199,7 @@ func (handler *Auth) changepassword() echo.HandlerFunc {
 
 func (handler *Auth) invalidate() echo.HandlerFunc {
 	eTag := apientity.APIErrorTag{
-		TagCode:   "AU",
+		TagCode:   authTagCode,
 		TagNumber: 4,
 	}
 	callerFuncName := setting.GetCallerFunctionName()
@@ -230,7 +232,7 @@ func (handler *Auth) invalidate() echo.HandlerFunc {
 
 func (handler *Auth) heartbeat() echo.HandlerFunc {
 	eTag := apientity.APIErrorTag{
-		TagCode:   "AU",
+		TagCode:   authTagCode,
 		TagNumber: 5,
 	}
 	callerFuncName := setting.GetCallerFunctionName()

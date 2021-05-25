@@ -62,3 +62,11 @@ small {
 .card-stats {
     line-height: 18px;
 }
+
+.sub-nav {
+    margin-bottom:110px;
+}
+
+.remove-toggle-icon::after {
+    display:none!important;
+}

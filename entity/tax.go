@@ -33,7 +33,7 @@ func (obj *Tax) Validate() error {
 	return nil
 }
 
-func NewTax(name, shortName string, percentage float32, taxGroup *TaxGroup) (*Tax, error) {
+func NewTax(name, shortName string, percentage float32) (*Tax, error) {
 	if name == "" {
 		return nil, exception.Tax_RequiredField_Name
 	}
@@ -43,14 +43,14 @@ func NewTax(name, shortName string, percentage float32, taxGroup *TaxGroup) (*Ta
 	if percentage <= 0 {
 		return nil, exception.Tax_RequiredField_Percentage
 	}
-	if taxGroup == nil {
-		return nil, exception.Tax_RequiredField_TaxGroup
-	}
+	//if taxGroup == nil {
+	//	return nil, exception.Tax_RequiredField_TaxGroup
+	//}
 	u := &Tax{
 		Name:       name,
 		ShortName:  shortName,
 		Percentage: percentage,
-		TaxGroup:   taxGroup,
+		//TaxGroup:   taxGroup,
 	}
 	return u, nil
 }
