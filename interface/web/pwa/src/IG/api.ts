@@ -11,6 +11,8 @@ class APIUrl {
   public static Auth_Heartbeat: string = Server.Instance.APIBaseURL + "auth/heartbeat";
   public static Auth_Invalidate: string = Server.Instance.APIBaseURL + "auth/invalidate";
 
+  public static Client_List: string = Server.Instance.APIBaseURL + "client/list";
+
 }
 
 export interface APIOptions {
@@ -99,9 +101,11 @@ export class API {
           //if (option.ClearPreviousToasts)
             //Vue.prototype.$swal.toast.fire()
             //Vue.$toast.clear();
-          const instance = mainVueApp.$swal.toast.fire(resp.Message, {
-            icon: toastType,
-          });
+          if (resp.Message != "") {
+              const instance = mainVueApp.$swal.toast.fire(resp.Message, {
+                icon: toastType,
+              });
+            }
         }
       }
 
@@ -114,7 +118,8 @@ export class API {
       else
         return resp;
     }).catch(error => {
-      const instance = Vue.$swal.toast.error("Fatal Error occured; '" + error + "'", {
+      console.log(error);
+      const instance = mainVueApp.$swal.toast.error("Fatal Error occured; '" + error + "'", {
         timer:8000
       });
       console.log(error);
@@ -163,13 +168,18 @@ export class API {
 
   public signout(option?: APIOptions): Promise<APIResponse<UserCredential>> {
     option = Object.assign({}, option);
-    return this.postCall<UserCredential>(APIUrl.Auth_Invalidate)
+    return this.postCall<UserCredential>(APIUrl.Auth_Invalidate, null, option)
       .then(resp => {
         if (resp.Status == APIResponseStatus.StatusSuccess) {
           igApp.Instance.clearUser();
         }
         return resp;
       })
+  }
+
+  public listOfCommpanyClients(option?: APIOptions): Promise<APIResponse<any>> {
+    option = Object.assign({}, option);
+    return this.postCall<any>(APIUrl.Client_List, null, option)
   }
 
 }

@@ -1,7 +1,6 @@
 import Vue from "vue";
 
 Vue.filter('igamount', function (value: any, symbol: string = null, locales: string = null) {
-    if (!value) return ''
     value = value.toString();
     let style = "decimal";
 

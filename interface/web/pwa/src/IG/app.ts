@@ -128,8 +128,15 @@ class Company implements ICompany {
     cid: number = -1;
     name: string = "";
     tel: string = "";
-
+    defaultCurrency: defaultCurrency;
 }
+
+class defaultCurrency implements IDefaultCurrency {
+    shortName: string = "";
+    longName: string = "";
+    conversion: number = 1;
+}
+
 
 interface IUserCredential {
     ucid: number;
@@ -144,10 +151,17 @@ interface IUserCredential {
 }
 
 
+
 interface ICompany {
     cid: number;
     name: string;
     tel: string;
+}
+
+interface IDefaultCurrency {
+    shortName: string;
+    longName: string;
+    conversion: number;
 }
 
 

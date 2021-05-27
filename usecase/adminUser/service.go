@@ -105,7 +105,7 @@ func (s *AdminUserService) VerifyCredential(email string, password string) (*ent
 	s.repo.OpenContext()
 	defer s.repo.CloseContext()
 	obj := entity.AdminUser{}
-	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{Email: email, Password: password}).First(&obj)
+	db := s.repo.Context.Preload("Company.DefaultCurrency").Where(&entity.AdminUser{Email: email, Password: password}).First(&obj)
 	if db.Error != nil {
 		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 			return nil, exception.AdminUser_RecordNotFound
@@ -139,7 +139,7 @@ func (s *AdminUserService) VerifyAuthTokenAndEmail(token *entity.UUID, email str
 	s.repo.OpenContext()
 	defer s.repo.CloseContext()
 	obj := entity.AdminUser{}
-	db := s.repo.Context.Preload("Company").Where(&entity.AdminUser{AuthToken: token, Email: email}).First(&obj)
+	db := s.repo.Context.Preload("Company.DefaultCurrency").Where(&entity.AdminUser{AuthToken: token, Email: email}).First(&obj)
 	if db.Error != nil {
 		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 			return nil, exception.AdminUser_InvalidAuthToken

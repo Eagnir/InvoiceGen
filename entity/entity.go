@@ -115,7 +115,7 @@ func GenerateDefaultData() []interface{} {
 	}
 
 	client, ex := NewClient(
-		"Abc Inc. (National)",
+		"Abc Inc.",
 		"Office #20, Silver Star IT Park, Andheri West, Mumbai 400058, Maharashtra, India.",
 		"abc@gmail.com",
 		"+91 9877374937",
@@ -129,7 +129,7 @@ func GenerateDefaultData() []interface{} {
 	}
 
 	client2, ex := NewClient(
-		"John & Sons (International)",
+		"John & Sons",
 		"Office #101, New York, New York 10012, United States of America.",
 		"jsons@gmail.com",
 		"+01 555 192-2028",

@@ -3,10 +3,22 @@ export interface BrowserInterface {
 
     getOS():string;
     getCtrlKeyForOS(): {short:string, value:string};
+    copyToClipboard(data: string): void;
 
 }
 
 export class Browser {
+
+    static copyToClipboard(data: string): void {
+      const listener = (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', data);
+      e.preventDefault();
+      document.removeEventListener('copy', listener);
+      };
+      document.addEventListener('copy', listener);
+      document.execCommand('copy');
+    }
+  
 
     static getOS():string {
         const userAgent = window.navigator.userAgent,
