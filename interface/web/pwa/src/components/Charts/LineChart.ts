@@ -13,7 +13,6 @@ export default class LineChart extends Mixins(Line) {
 
   public mounted() {
     const opts:ChartOptions = Object.assign(DefaultChartOption ,this.ChartOption);
-    console.log(opts);
     this.renderChart(this.ChartData, opts);
   }
 }

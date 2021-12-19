@@ -1,5 +1,5 @@
 import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import VueRouter, { Route, RouteConfig } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Error from "../views/Error.vue";
 import Login from "../views/Login.vue";
@@ -22,6 +22,15 @@ import Auth from "../Auth.vue";
 
 
 Vue.use(VueRouter);
+
+function processProp(mapping:Record<string, (param:any)=>void>) {
+  return function(route:Route) {
+    const nameType = Object.entries(mapping);  // [[param1, Number], [param2, String]]
+    const nameRouteParam = nameType.map(([name, fn]) => [name, fn(route.params[name])]);  // [[param1, 1], [param2, "hello"]]
+    const props = Object.fromEntries(nameRouteParam);  // {param1: 1, param2: "hello"}
+    return props;
+  }
+}
 
 const routes: Array<RouteConfig> = [
 
@@ -76,7 +85,7 @@ const routes: Array<RouteConfig> = [
           {
             path: ":clientId/:clientName/details/",
             name: "ClientDetails",
-            props: true,
+            props: processProp({clientId: Number, clientName: String}),
             component: ClientDetails,
           }
         ]

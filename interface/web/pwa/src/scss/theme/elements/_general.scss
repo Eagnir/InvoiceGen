@@ -70,3 +70,8 @@ small {
 .remove-toggle-icon::after {
     display:none!important;
 }
+
+.convertedCurrency {
+    border-bottom:1px solid $accent-pri-color;
+    padding-bottom:2px;
+}

@@ -51,6 +51,7 @@ export class API {
   }
 
   protected postCall<T>(url: string, data?: any, option?: APIOptions): Promise<APIResponse<T>> {
+    try{mainVueApp.$isLoading(true);}catch(err){console.log(err);}
     option = Object.assign({}, this.defaultOption, option);
     const h: any = option.AuthRequired ? this.getAuthHeaders() : this.getHeaders();
     return fetch(url, {
@@ -101,7 +102,6 @@ export class API {
       }
 
       // Handle session expiry errors here
-
       if (resp.Status == APIResponseStatus.StatusSuccess)
         return resp;
       else if (option.RejectOnFailure)
@@ -109,11 +109,14 @@ export class API {
       else
         return resp;
     }).catch(error => {
-      console.log(error);
+      //console.log(error);
       const instance = mainVueApp.$swal.toast.error("Fatal Error occured; '" + error + "'", {
         timer:8000
       });
-      console.log(error);
+      throw new Error(error);
+    }).finally(()=>{
+      try{setTimeout(()=>{mainVueApp.$ig.app.initBS();},0); mainVueApp.$isLoading(false);
+      }catch(err){console.log(err);}
     }) as Promise<APIResponse<T>>;
   }
 }

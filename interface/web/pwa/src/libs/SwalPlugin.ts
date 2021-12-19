@@ -67,7 +67,6 @@ export default {
             },
             toast: {
                 fire: (text: string, options?: SweetAlertOptions): Promise<SweetAlertResult> => {
-                    console.log(options);
                     return Swal.fire(Object.assign({}, ToastDefOptions, options, { toast: true, text: text }))
                 },
                 info: (text: string, options?: SweetAlertOptions): Promise<SweetAlertResult> => {

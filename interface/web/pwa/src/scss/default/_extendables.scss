@@ -13,11 +13,13 @@ $secondary:  var.$accent-sec-color;
 $body-color: fn.contrast();
 $body-bg: var.$primary-color;
 
-$input-bg:fn.contrast('hint');
+$input-bg:var.$input-bg-color;
 $input-border-color: fn.contrast('disabled');
 $input-color:var.$accent-sec-color;
 $input-focus-border-color:$secondary;
 $input-focus-box-shadow: -4px 0px;
+
+$badge-font-weight: normal;
 
 // Option B: Include parts of Bootstrap
 @import "~bootstrap/scss/bootstrap";

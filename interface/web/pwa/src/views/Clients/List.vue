@@ -51,7 +51,9 @@
                 </h5>
                 <div class="d-flex">
                   <p class="card-text mb-1 flex-grow-1"><i class="bi-cash" title="Default Currency"></i> {{client.DefaultCurrency.ShortName}}</p>
-                  <small class="card-text mb-1" @click.stop="copyGST(client.GSTNumber)" v-if="client.GSTNumber!=''"><i class="bi-hash" title="GST Number"></i>{{client.GSTNumber}}</small>
+                  <small class="card-text mb-1" data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            :title="'Tap to copy'" @click.stop="copyGST(client.GSTNumber)" v-if="client.GSTNumber!=''"><i class="bi-hash" title="GST Number"></i>{{client.GSTNumber}}</small>
                 </div>
                 <p class="card-text mb-1" :title="client.InvoiceStats.TotalAmount"><i class="bi-calendar3" title="Current Financial Year"></i> <span v-html="$options.filters.igamount(client.InvoiceStats.TotalAmount / client.DefaultCurrency.Conversion, 'INR')"></span> <small v-if="client.DefaultCurrency.ShortName != $ig.app.User.company.defaultCurrency.shortName">(<span v-html="$options.filters.igamount(client.InvoiceStats.TotalAmount,  client.DefaultCurrency.ShortName)"></span>)</small></p>
                 <p class="card-text m-0 d-flex">

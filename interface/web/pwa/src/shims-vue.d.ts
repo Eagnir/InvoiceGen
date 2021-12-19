@@ -15,3 +15,14 @@ declare module 'v-hotkey' {
 
   export default plugin;
 }
+
+declare module 'vuejs-loading-screen' {
+
+export default {
+  install(Vue: typeof _Vue, opt?: any) }
+  declare module 'vue/types/vue' {
+      interface Vue {
+        $isLoading: (isLoading:boolean) => void
+    }
+  }
+};

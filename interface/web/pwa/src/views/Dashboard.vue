@@ -346,7 +346,6 @@ export default class Dashboard extends Vue {
       sum += element;
     });
 
-    console.log(Math.round(sum / this.chartData.datasets[0].data.length));
     this.chartData.datasets[0].data.forEach((element) => {
       this.chartData.datasets[1].data.push(
         Math.round(sum / this.chartData.datasets[0].data.length)

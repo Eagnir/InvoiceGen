@@ -302,7 +302,6 @@ export default class Home extends Vue {
 
   NavTo(routeName: string, exec: boolean = false) {
     var nfn = () => {
-      console.log(this.$router.currentRoute.name);
       if (this.$router.currentRoute.name != routeName) {
         this.$router.push({ name: routeName });
       } else this.$swal.toast.info("You are already in " + routeName);

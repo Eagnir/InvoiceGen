@@ -15,11 +15,11 @@
 
     <div class="row align-items-center">
       <div class="col-12 col-md text-md-start text-center">
-        <h1 class="m-0">{{ clientName }}</h1>
+        <h1 class="m-0">{{ client.Name==null ? clientName  : client.Name  }}</h1>
       </div>
       <div class="col-12 col-md-5 text-md-end d-none d-md-block">
         <nav class="navbar text-center justify-content-center align-items-center flex-nowrap">
-          <button type="button" class="btn flex-fill btn-primary"><i class="bi bi-arrow-repeat"></i> Reset</button>
+          <button type="button" class="btn flex-fill btn-primary" @click.stop="loadClientDetails()"><i class="bi bi-arrow-repeat"></i> Reset</button>
           <button type="button" class="btn flex-fill btn-success ms-3"><i class="bi bi-check2-square"></i> Save</button>
           <div class="btn-group dropdown flex-fill invisible order-first">
             <button type="button" class="btn btn-secondary dropdown-toggle remove-toggle-icon" data-bs-toggle="dropdown" aria-expanded="false">
@@ -43,7 +43,7 @@
         </li>
         <li class="breadcrumb-item active">Detail</li>
         <li class="breadcrumb-item active" aria-current="page">
-          {{ clientName }} #{{ clientId }}
+          {{ client.Name==null ? clientName  : client.Name  }} #{{ clientId }}
         </li>
       </ol>
     </nav>
@@ -52,7 +52,7 @@
       <div class="col-md mb-3 mb-md-0">
         <div class="form-floating">
           <input type="text" class="form-control" id="companyName" placeholder="Abc Pvt. Ltd." v-model.trim="client.Name">
-          <label for="companyName">Company Name</label>
+          <label for="companyName" class="required">Company Name*</label>
         </div>
       </div>
       <div class="col-md mb-3 mb-md-0">
@@ -78,7 +78,7 @@
       <div class="col">
         <div class="form-floating">
           <input type="text" class="form-control" id="address" placeholder="Office #, Building name, street, city, zip, state, country." v-model.trim="client.Address">
-          <label for="address">Postal Address</label>
+          <label for="address" class="required">Postal Address*</label>
         </div>
       </div>
     </div>
@@ -86,14 +86,14 @@
     <div class="row mt-3">
       <div class="col-md mb-3 mb-md-0">
         <div class="form-floating">
-          <input type="text" class="form-control" id="email" placeholder="name@domain.com" v-model.trim="client.Email">
-          <label for="email">Email</label>
+          <input type="text" class="form-control" id="contactNumber" placeholder="1234567890" v-model.trim="client.ContactNumber">
+          <label for="contactNumber" class="required">Contact Number*</label>
         </div>
       </div>
       <div class="col-md">
         <div class="form-floating">
-          <input type="text" class="form-control" id="contactNumber" placeholder="1234567890" v-model.trim="client.ContactNumber">
-          <label for="contactNumber">Contact Number</label>
+          <input type="text" class="form-control" id="email" placeholder="name@domain.com" v-model.trim="client.Email">
+          <label for="email">Email</label>
         </div>
       </div>
     </div>
@@ -131,9 +131,9 @@
               <td class="text-center" colspan="7">No invoices found</td>
             </tr>
             <tr v-for="(invoice, index) in client.Invoices" :key="invoice.InvoiceNumber">
-              <th scope="row">{{ index+1 }}</th>
-              <th>{{ invoice.InvoiceNumber }} <span v-html="getInvoiceStatusText(invoice.Status)"></span>
-              </th>
+              <td scope="row">{{ index+1 }}</td>
+              <td>{{ invoice.InvoiceNumber }} <span v-html="getInvoiceStatusText(invoice.Status)"></span>
+              </td>
               <td>{{ invoice.CreatedAt | moment('D MMM yyyy') }}</td>
               <td class="d-none d-md-table-cell">
                 {{ invoice.InvoiceItems!=null ? invoice.InvoiceItems.length : '--' }}
@@ -178,6 +178,7 @@
 import { Prop, Vue } from "vue-property-decorator";
 import Component from "vue-class-component";
 import { APIResponseStatus } from "@/entity/response";
+import { IGAPI } from "@/IG/igAPI";
 
 Component.registerHooks([
   "beforeRouteEnter",
@@ -189,7 +190,7 @@ Component.registerHooks([
   components: {},
 })
 export default class ClientDetails extends Vue {
-  @Prop({ default: "0" })
+  @Prop({ default: 0, type: Number })
   clientId: number;
   @Prop({ default: "Loading..." })
   clientName: string;
@@ -201,13 +202,13 @@ export default class ClientDetails extends Vue {
   didChange: boolean;
 
   mounted() {
+    this.loadClientDetails();
+  }
+
+  loadClientDetails() {
     this.$ig.api.getClientDetails(this.clientId).then((resp) => {
-        this.client = resp.Data[0];
-        //this.$swal.toast.info("Client successfully loaded");
-        this.$nextTick(function(){
-          this.$ig.app.initBSTooltips();
-        })
-    })
+      this.client = resp.Data[0];
+    });
   }
 
   beforeRouteLeave(to: any, from: any, next: any) {

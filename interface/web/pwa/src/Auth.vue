@@ -38,7 +38,6 @@ export default class Auth extends Vue {
         return;
       }
 
-        console.log(to);
       this.$ig.api
         .heartbeat({
           RejectOnFailure: false,
@@ -54,8 +53,6 @@ export default class Auth extends Vue {
 
 
     this.$router.afterEach((to, from) => {
-      
-        console.log("Reached");
       this.$ig.app.initBS();
     });
   }

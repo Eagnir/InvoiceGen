@@ -1,2 +1,10 @@
 @use '../../default/extendables'as *;
 
+
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    font-weight: bold;
+  }
+
+.form-floating > label.required {
+  color: $negative-color;
+}
