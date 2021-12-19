@@ -21,11 +21,15 @@ func NewService(r *repository.DBContext) *ClientService {
 	}
 }
 
-func (s *ClientService) GetEntityById(id int) (*entity.Client, error) {
+func (s *ClientService) GetEntityById(id int, preloads ...string) (*entity.Client, error) {
 	s.repo.OpenContext()
 	defer s.repo.CloseContext()
 	obj := entity.Client{}
-	db := s.repo.Context.First(&obj, id)
+	db := s.repo.Context
+	for _, preload := range preloads {
+		db = db.Preload(preload)
+	}
+	db = db.First(&obj, id)
 	if db.Error != nil {
 		if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 			return nil, exception.Client_RecordNotFound

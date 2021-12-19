@@ -91,6 +91,10 @@ func GenerateDefaultData() []interface{} {
 	if ex == nil {
 		res = append(res, curUSD)
 	}
+	curCAD, ex := NewCurrency("CAD", 0.017)
+	if ex == nil {
+		res = append(res, curCAD)
+	}
 
 	company, ex := NewCompany(
 		"AdventureCode Ltd",
@@ -147,9 +151,9 @@ func GenerateDefaultData() []interface{} {
 		"Office #500, Ottawa 10012, Canada.",
 		"xyz@domain.com",
 		"+01 551 192-2028",
-		"CAN",
+		"CAD",
 		"",
-		curUSD,
+		curCAD,
 		company,
 	)
 	if ex == nil {

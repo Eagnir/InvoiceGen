@@ -141,9 +141,8 @@ func confirmDBExist() {
 }
 
 func main() {
-	confirmDBExist()
-
 	c := color.New()
+	confirmDBExist()
 
 	var activeInterfaces ConfigInterfaces
 	var activeConfig Config = Config{}

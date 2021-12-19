@@ -21,7 +21,7 @@
     <hr />
     <div class="row">
       <router-link
-        :to="{ name: 'ClientDetails', params: { clientId: 1, clientName:'Client Name Here' } }"
+        :to="{ name: 'ClientDetails', params: { clientId: client.ClientId, clientName: client.Name, client: client } }"
         custom
         v-slot="{ navigate }"
         v-for="client in clientResults" :key="client.ClientId"

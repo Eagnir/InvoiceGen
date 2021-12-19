@@ -1,5 +1,5 @@
 import _Vue from "vue";
-import { API as igApi } from "@/IG/api";
+import { IGAPI as igApi } from "@/IG/igAPI";
 import { Server as igServer } from "@/IG/server";
 import { Browser as igBrowser, BrowserInterface } from "@/IG/browser";
 import { Keymap as igKeymap, KeymapInterface } from "@/IG/keymap";
